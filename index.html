@@ -23,7 +23,7 @@
     --glass-border: rgba(255,255,255,0.15);
   }
 
-  html { scroll-behavior: smooth; font-size: 16px; }
+  html { scroll-behavior: smooth; font-size: 16px; -webkit-text-size-adjust: 100%; }
 
   body {
     font-family: 'Inter', sans-serif;
@@ -31,7 +31,10 @@
     color: var(--white);
     overflow-x: hidden;
     cursor: default;
+    -webkit-tap-highlight-color: transparent;
   }
+
+  img, video { max-width: 100%; }
 
   /* SCROLLBAR */
   ::-webkit-scrollbar { width: 3px; }
@@ -84,6 +87,40 @@
   }
   .lang-btn.active, .lang-btn:hover { color: white; background: rgba(255,255,255,.1); }
   .lang-sep { color: rgba(255,255,255,.25); }
+
+  /* MOBILE MENU TOGGLE */
+  .menu-toggle {
+    display: none;
+    width: 40px; height: 40px;
+    background: none; border: none; cursor: pointer;
+    flex-direction: column; align-items: center; justify-content: center;
+    gap: 5px; z-index: 1100;
+  }
+  .menu-toggle span {
+    display: block; width: 24px; height: 1px;
+    background: white; transition: transform .3s, opacity .3s;
+  }
+  .menu-toggle.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+  .menu-toggle.open span:nth-child(2) { opacity: 0; }
+  .menu-toggle.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+  .mobile-nav {
+    position: fixed; inset: 0; z-index: 1050;
+    background: rgba(15,17,14,.98);
+    backdrop-filter: blur(20px);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 32px;
+    opacity: 0; visibility: hidden;
+    transition: opacity .35s, visibility .35s;
+  }
+  .mobile-nav.open { opacity: 1; visibility: visible; }
+  .mobile-nav a {
+    color: rgba(255,255,255,.85); text-decoration: none;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem; font-weight: 300; letter-spacing: .05em;
+  }
+  .mobile-nav .nav-right { margin-top: 12px; }
 
   /* ── HERO ── */
   #hero {
@@ -810,33 +847,134 @@
     nav { padding: 20px 24px; }
     nav.scrolled { padding: 14px 24px; }
     .nav-links { display: none; }
-    .hero-content { padding: 0 32px; }
-    #about { grid-template-columns: 1fr; padding: 80px 32px; }
-    .about-img-accent, .about-stats { display: none; }
-    #seasons { padding: 80px 0; }
-    .seasons-header { padding: 0 32px; flex-direction: column; align-items: flex-start; gap: 12px; }
+    nav > .nav-right { display: none; }
+    .menu-toggle { display: flex; }
+    .hero-content { padding: 0 24px; max-width: 100%; }
+    #about { grid-template-columns: 1fr; padding: 80px 24px; gap: 48px; }
+    .about-img-accent { display: none; }
+    .about-stats {
+      position: static; margin-top: 24px; width: 100%;
+      flex-direction: row; justify-content: space-between;
+      border-radius: 12px; padding: 20px;
+    }
+    #seasons { padding: 64px 0; }
+    .seasons-header { padding: 0 24px; flex-direction: column; align-items: flex-start; gap: 12px; }
+    .seasons-header p { text-align: left; max-width: 100%; }
     .seasons-track {
-      padding: 0 32px; overflow-x: auto; scrollbar-width: none;
-      gap: 10px;
+      padding: 0 24px; overflow-x: auto; scrollbar-width: none;
+      gap: 10px; scroll-snap-type: x mandatory;
     }
     .seasons-track::-webkit-scrollbar { display: none; }
-    .season-card { flex: 0 0 260px; height: 380px; }
+    .season-card { flex: 0 0 240px; height: 340px; scroll-snap-align: start; }
     .seasons-track:hover .season-card,
     .seasons-track:hover .season-card:hover { flex-grow: 0; }
-    #experiences { padding: 80px 32px; }
-    .exp-grid { grid-template-columns: 1fr; }
+    #experiences { padding: 64px 24px; }
+    .exp-header { margin-bottom: 48px; }
+    .exp-grid { grid-template-columns: 1fr; gap: 3px; }
     .exp-card { aspect-ratio: 16/9; }
-    #map-section { padding: 80px 32px; }
+    #map-section { padding: 64px 24px; }
     .map-inner { grid-template-columns: 1fr; gap: 40px; }
-    .map-visual { height: 300px; }
-    #gallery { padding: 80px 32px; }
+    .map-visual { height: 280px; }
+    .map-route-info { flex-wrap: wrap; }
+    #gallery { padding: 64px 24px; }
+    .gallery-header { margin-bottom: 32px; }
     .masonry { columns: 2; }
-    #planner { padding: 80px 32px; }
-    #news { padding: 80px 32px; }
-    .news-grid { grid-template-columns: 1fr; }
-    footer { padding: 60px 32px; }
-    .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+    #planner { padding: 80px 24px; }
+    .planner-ui { padding: 28px 20px; }
+    #news { padding: 64px 24px; }
+    .news-header { margin-bottom: 32px; }
+    .news-grid { grid-template-columns: 1fr; gap: 20px; }
+    footer { padding: 56px 24px; }
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 40px; }
     .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+    .lightbox-close, .video-modal-close { top: 20px; right: 20px; }
+  }
+
+  @media (max-width: 600px) {
+    nav { padding: 16px 20px; }
+    nav.scrolled { padding: 12px 20px; }
+    .nav-logo-main { font-size: 1.1rem; }
+    #hero { height: 100svh; }
+    .hero-content { margin-top: 20px; }
+    .hero-eyebrow { font-size: .58rem; letter-spacing: .25em; margin-bottom: 20px; }
+    .hero-title { font-size: clamp(2.4rem, 11vw, 3.2rem); }
+    .hero-subtitle { font-size: .85rem; }
+    .hero-cta-row { margin-top: 32px; gap: 20px; }
+    .play-circle { width: 44px; height: 44px; }
+    .slide-counter { display: none; }
+    .scroll-indicator { bottom: 20px; }
+    .scroll-line { height: 40px; }
+    .weather-badge {
+      bottom: auto; top: 84px; right: 20px;
+      padding: 8px 14px; gap: 8px;
+    }
+    .weather-temp { font-size: .85rem; }
+    .weather-desc { font-size: .62rem; }
+
+    #about { padding: 64px 20px; }
+    .about-text h2 { font-size: clamp(2rem, 8vw, 2.6rem); margin-bottom: 24px; }
+    .about-text p { font-size: .85rem; }
+    .about-stats { flex-wrap: wrap; gap: 16px 8px; padding: 16px; }
+    .stat-num { font-size: 1.7rem; }
+
+    .seasons-header { padding: 0 20px; }
+    .seasons-track { padding: 0 20px; }
+    .season-card { flex-basis: 200px; height: 300px; }
+    .season-name { font-size: 2.2rem; }
+
+    #experiences { padding: 56px 20px; }
+    .exp-header h2 { font-size: clamp(2rem, 9vw, 2.8rem); }
+    .exp-name { font-size: 1.35rem; }
+
+    #map-section { padding: 56px 20px; }
+    .map-text p { margin-bottom: 28px; }
+    .poi-item { padding: 14px 16px; gap: 12px; }
+    .poi-name { font-size: .8rem; }
+    .map-visual { height: 240px; border-radius: 16px; }
+    .map-location-bar { flex-wrap: wrap; row-gap: 8px; }
+    .map-locate-btn { margin-left: 0; }
+    .route-info-dist { font-size: 1.2rem; }
+    .route-open-btn { padding: 6px 10px; font-size: .6rem; }
+
+    #gallery { padding: 56px 20px; }
+    .masonry { columns: 2; column-gap: 2px; }
+
+    #planner { padding: 64px 20px; }
+    .planner-inner h2 { font-size: clamp(2rem, 9vw, 2.6rem); }
+    .planner-inner p { margin-bottom: 32px; }
+    .planner-ui { padding: 24px 16px; border-radius: 12px; }
+    .planner-question { font-size: 1.1rem; }
+    .planner-option { padding: 9px 16px; font-size: .7rem; }
+
+    #news { padding: 56px 20px; }
+    .news-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+
+    footer { padding: 48px 20px; }
+    .footer-top { grid-template-columns: 1fr; gap: 32px; }
+    .footer-bottom { font-size: .65rem; }
+
+    .lightbox-img { max-width: 94vw; max-height: 80vh; }
+    .lightbox-close, .video-modal-close { top: 16px; right: 16px; font-size: 1.3rem; }
+    .video-modal video { max-width: 94vw; }
+
+    .mobile-nav a { font-size: 1.35rem; }
+  }
+
+  @media (max-width: 380px) {
+    .hero-title { font-size: clamp(2rem, 12vw, 2.6rem); }
+    .about-stats { flex-direction: column; }
+    .season-card { flex-basis: 170px; height: 260px; }
+    .masonry { columns: 1; }
+    .weather-badge { display: none; }
+  }
+
+  /* Touch devices: hover-only content should still be reachable */
+  @media (hover: none) and (pointer: coarse) {
+    .exp-card-content { position: static; padding: 18px; }
+    .exp-icon, .exp-arrow { opacity: 1; transform: none; position: static; display: inline-flex; margin-bottom: 8px; }
+    .exp-card-overlay { background: linear-gradient(to top, rgba(0,0,0,.85) 0%, rgba(0,0,0,.35) 100%); }
+    .season-info { padding: 24px; }
+    .masonry-item-overlay { opacity: 1; background: linear-gradient(to top, rgba(0,0,0,.6) 0%, transparent 60%); }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -867,7 +1005,26 @@
     <span class="lang-sep">|</span>
     <button class="lang-btn" onclick="setLang('zh')">中文</button>
   </div>
+  <button class="menu-toggle" id="menuToggle" onclick="toggleMobileNav()" aria-label="メニュー">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<div class="mobile-nav" id="mobileNav">
+  <a href="#about" onclick="toggleMobileNav()">開陽台について</a>
+  <a href="#seasons" onclick="toggleMobileNav()">見どころ</a>
+  <a href="#experiences" onclick="toggleMobileNav()">体験</a>
+  <a href="#planner" onclick="toggleMobileNav()">旅の計画</a>
+  <a href="#map-section" onclick="toggleMobileNav()">アクセス</a>
+  <a href="#news" onclick="toggleMobileNav()">お知らせ</a>
+  <div class="nav-right">
+    <button class="lang-btn active" onclick="setLang('ja')">日本語</button>
+    <span class="lang-sep">|</span>
+    <button class="lang-btn" onclick="setLang('en')">EN</button>
+    <span class="lang-sep">|</span>
+    <button class="lang-btn" onclick="setLang('zh')">中文</button>
+  </div>
+</div>
 
 <!-- HERO -->
 <section id="hero">
@@ -1371,6 +1528,12 @@ window.addEventListener('scroll', () => {
   document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 60);
 });
 
+function toggleMobileNav() {
+  document.getElementById('menuToggle').classList.toggle('open');
+  document.getElementById('mobileNav').classList.toggle('open');
+  document.body.style.overflow = document.getElementById('mobileNav').classList.contains('open') ? 'hidden' : '';
+}
+
 
 // ── GOOGLE MAP — interactive route switcher with geolocation ──
 (function() {
@@ -1619,7 +1782,7 @@ const langs = {
 
 function setLang(l) {
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-  document.querySelector(`[onclick="setLang('${l}')"]`).classList.add('active');
+  document.querySelectorAll(`[onclick="setLang('${l}')"]`).forEach(b => b.classList.add('active'));
   const d = langs[l];
   document.querySelector('.hero-eyebrow').textContent = d.heroEyebrow;
   document.querySelector('.hero-title').innerHTML = d.heroTitle;
