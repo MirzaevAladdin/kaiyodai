@@ -23,7 +23,7 @@
     --glass-border: rgba(255,255,255,0.15);
   }
 
-  html { scroll-behavior: smooth; font-size: 16px; -webkit-text-size-adjust: 100%; }
+  html { scroll-behavior: smooth; font-size: 16px; }
 
   body {
     font-family: 'Inter', sans-serif;
@@ -31,10 +31,7 @@
     color: var(--white);
     overflow-x: hidden;
     cursor: default;
-    -webkit-tap-highlight-color: transparent;
   }
-
-  img, video { max-width: 100%; }
 
   /* SCROLLBAR */
   ::-webkit-scrollbar { width: 3px; }
@@ -88,39 +85,41 @@
   .lang-btn.active, .lang-btn:hover { color: white; background: rgba(255,255,255,.1); }
   .lang-sep { color: rgba(255,255,255,.25); }
 
-  /* MOBILE MENU TOGGLE */
-  .menu-toggle {
+  /* MOBILE NAV TOGGLE */
+  .nav-toggle {
     display: none;
-    width: 40px; height: 40px;
     background: none; border: none; cursor: pointer;
+    width: 40px; height: 40px; padding: 0;
     flex-direction: column; align-items: center; justify-content: center;
-    gap: 5px; z-index: 1100;
+    gap: 5px; z-index: 1002; flex-shrink: 0;
   }
-  .menu-toggle span {
-    display: block; width: 24px; height: 1px;
-    background: white; transition: transform .3s, opacity .3s;
+  .nav-toggle span {
+    display: block; width: 22px; height: 1px; background: white;
+    transition: transform .3s, opacity .3s;
   }
-  .menu-toggle.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
-  .menu-toggle.open span:nth-child(2) { opacity: 0; }
-  .menu-toggle.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+  .nav-toggle.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+  .nav-toggle.open span:nth-child(2) { opacity: 0; }
+  .nav-toggle.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
 
-  .mobile-nav {
-    position: fixed; inset: 0; z-index: 1050;
-    background: rgba(15,17,14,.98);
-    backdrop-filter: blur(20px);
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 32px;
-    opacity: 0; visibility: hidden;
-    transition: opacity .35s, visibility .35s;
+  .mobile-menu {
+    position: fixed; inset: 0; z-index: 1001;
+    background: rgba(14,17,12,.98); backdrop-filter: blur(24px);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 28px;
+    opacity: 0; visibility: hidden; transform: translateY(-12px);
+    transition: opacity .35s, visibility .35s, transform .35s;
   }
-  .mobile-nav.open { opacity: 1; visibility: visible; }
-  .mobile-nav a {
+  .mobile-menu.open { opacity: 1; visibility: visible; transform: translateY(0); }
+  .mobile-menu a {
     color: rgba(255,255,255,.85); text-decoration: none;
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.6rem; font-weight: 300; letter-spacing: .05em;
+    font-size: 1.8rem; font-weight: 300; letter-spacing: .04em;
   }
-  .mobile-nav .nav-right { margin-top: 12px; }
+  .mobile-menu a:active, .mobile-menu a:hover { color: var(--gold); }
+  .mobile-menu-langs {
+    display: flex; align-items: center; gap: 14px; margin-top: 12px;
+  }
+  .mobile-menu-langs .lang-btn { font-size: .8rem; padding: 6px 12px; }
 
   /* ── HERO ── */
   #hero {
@@ -842,21 +841,25 @@
     100% { transform: scale(2.2); opacity: 0; }
   }
 
-  /* RESPONSIVE */
+  /* RESPONSIVE ── tablets & phones (≤900px) */
   @media (max-width: 900px) {
-    nav { padding: 20px 24px; }
-    nav.scrolled { padding: 14px 24px; }
+    nav { padding: 18px 20px; }
+    nav.scrolled { padding: 13px 20px; }
     .nav-links { display: none; }
-    nav > .nav-right { display: none; }
-    .menu-toggle { display: flex; }
-    .hero-content { padding: 0 24px; max-width: 100%; }
-    #about { grid-template-columns: 1fr; padding: 80px 24px; gap: 48px; }
-    .about-img-accent { display: none; }
-    .about-stats {
-      position: static; margin-top: 24px; width: 100%;
-      flex-direction: row; justify-content: space-between;
-      border-radius: 12px; padding: 20px;
-    }
+    .nav-right { gap: 8px; }
+    .nav-toggle { display: flex; }
+
+    #hero { height: 100svh; }
+    .hero-content { padding: 0 24px; margin-top: 40px; }
+    .hero-cta-row { margin-top: 36px; gap: 20px; }
+    .slide-counter { left: 16px; }
+    .slide-progress { height: 60px; }
+    .weather-badge { right: 16px; bottom: 96px; padding: 8px 14px; }
+    .scroll-indicator { bottom: 24px; }
+
+    #about { grid-template-columns: 1fr; padding: 72px 24px; gap: 48px; }
+    .about-img-accent, .about-stats { display: none; }
+
     #seasons { padding: 64px 0; }
     .seasons-header { padding: 0 24px; flex-direction: column; align-items: flex-start; gap: 12px; }
     .seasons-header p { text-align: left; max-width: 100%; }
@@ -865,116 +868,94 @@
       gap: 10px; scroll-snap-type: x mandatory;
     }
     .seasons-track::-webkit-scrollbar { display: none; }
-    .season-card { flex: 0 0 240px; height: 340px; scroll-snap-align: start; }
+    .season-card { flex: 0 0 260px; height: 380px; scroll-snap-align: start; }
     .seasons-track:hover .season-card,
     .seasons-track:hover .season-card:hover { flex-grow: 0; }
-    #experiences { padding: 64px 24px; }
+
+    #experiences { padding: 72px 24px; }
     .exp-header { margin-bottom: 48px; }
-    .exp-grid { grid-template-columns: 1fr; gap: 3px; }
-    .exp-card { aspect-ratio: 16/9; }
-    #map-section { padding: 64px 24px; }
-    .map-inner { grid-template-columns: 1fr; gap: 40px; }
-    .map-visual { height: 280px; }
-    .map-route-info { flex-wrap: wrap; }
-    #gallery { padding: 64px 24px; }
+    .exp-grid { grid-template-columns: 1fr 1fr; gap: 2px; }
+    .exp-card { aspect-ratio: 1/1; }
+    .exp-arrow { opacity: 1; transform: scale(1); }
+    .exp-icon { opacity: 1; transform: translateY(0); }
+
+    #map-section { padding: 72px 24px; }
+    .map-inner { grid-template-columns: 1fr; gap: 32px; }
+    .map-visual { height: 320px; }
+    .poi-item { padding: 14px 16px; }
+
+    #gallery { padding: 72px 24px; }
     .gallery-header { margin-bottom: 32px; }
     .masonry { columns: 2; }
-    #planner { padding: 80px 24px; }
-    .planner-ui { padding: 28px 20px; }
-    #news { padding: 64px 24px; }
-    .news-header { margin-bottom: 32px; }
+
+    #planner { padding: 72px 24px; }
+    .planner-ui { padding: 28px 22px; }
+
+    #news { padding: 72px 24px; }
     .news-grid { grid-template-columns: 1fr; gap: 20px; }
+
     footer { padding: 56px 24px; }
     .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 40px; }
     .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
-    .lightbox-close, .video-modal-close { top: 20px; right: 20px; }
   }
 
+  /* RESPONSIVE ── large phones (≤600px) */
   @media (max-width: 600px) {
-    nav { padding: 16px 20px; }
-    nav.scrolled { padding: 12px 20px; }
-    .nav-logo-main { font-size: 1.1rem; }
-    #hero { height: 100svh; }
-    .hero-content { margin-top: 20px; }
-    .hero-eyebrow { font-size: .58rem; letter-spacing: .25em; margin-bottom: 20px; }
-    .hero-title { font-size: clamp(2.4rem, 11vw, 3.2rem); }
+    nav { padding: 16px 18px; }
+    .nav-logo-main { font-size: 1.1rem; letter-spacing: .18em; }
+    .nav-right { font-size: .62rem; }
+
+    .hero-content { padding: 0 20px; margin-top: 32px; }
+    .hero-eyebrow { margin-bottom: 18px; font-size: .58rem; }
     .hero-subtitle { font-size: .85rem; }
-    .hero-cta-row { margin-top: 32px; gap: 20px; }
-    .play-circle { width: 44px; height: 44px; }
+    .hero-cta-row { margin-top: 28px; }
+    .play-circle { width: 46px; height: 46px; }
     .slide-counter { display: none; }
-    .scroll-indicator { bottom: 20px; }
-    .scroll-line { height: 40px; }
-    .weather-badge {
-      bottom: auto; top: 84px; right: 20px;
-      padding: 8px 14px; gap: 8px;
-    }
-    .weather-temp { font-size: .85rem; }
-    .weather-desc { font-size: .62rem; }
+    .weather-badge { bottom: 84px; right: 14px; }
 
-    #about { padding: 64px 20px; }
-    .about-text h2 { font-size: clamp(2rem, 8vw, 2.6rem); margin-bottom: 24px; }
+    #about { padding: 56px 20px; gap: 36px; }
     .about-text p { font-size: .85rem; }
-    .about-stats { flex-wrap: wrap; gap: 16px 8px; padding: 16px; }
-    .stat-num { font-size: 1.7rem; }
 
-    .seasons-header { padding: 0 20px; }
+    #seasons { padding: 48px 0; }
+    .seasons-header { padding: 0 20px; margin-bottom: 36px; }
     .seasons-track { padding: 0 20px; }
-    .season-card { flex-basis: 200px; height: 300px; }
+    .season-card { flex: 0 0 220px; height: 320px; }
     .season-name { font-size: 2.2rem; }
 
     #experiences { padding: 56px 20px; }
-    .exp-header h2 { font-size: clamp(2rem, 9vw, 2.8rem); }
-    .exp-name { font-size: 1.35rem; }
+    .exp-grid { grid-template-columns: 1fr 1fr; }
+    .exp-name { font-size: 1.3rem; }
 
     #map-section { padding: 56px 20px; }
     .map-text p { margin-bottom: 28px; }
-    .poi-item { padding: 14px 16px; gap: 12px; }
-    .poi-name { font-size: .8rem; }
-    .map-visual { height: 240px; border-radius: 16px; }
-    .map-location-bar { flex-wrap: wrap; row-gap: 8px; }
-    .map-locate-btn { margin-left: 0; }
-    .route-info-dist { font-size: 1.2rem; }
-    .route-open-btn { padding: 6px 10px; font-size: .6rem; }
+    .map-visual { height: 260px; border-radius: 16px; }
+    .map-route-info { flex-wrap: wrap; }
+    .route-open-btn { width: 100%; text-align: center; }
 
     #gallery { padding: 56px 20px; }
     .masonry { columns: 2; column-gap: 2px; }
 
-    #planner { padding: 64px 20px; }
-    .planner-inner h2 { font-size: clamp(2rem, 9vw, 2.6rem); }
-    .planner-inner p { margin-bottom: 32px; }
-    .planner-ui { padding: 24px 16px; border-radius: 12px; }
+    #planner { padding: 56px 20px; }
+    .planner-ui { padding: 22px 16px; }
     .planner-question { font-size: 1.1rem; }
     .planner-option { padding: 9px 16px; font-size: .7rem; }
 
     #news { padding: 56px 20px; }
-    .news-header { flex-direction: column; align-items: flex-start; gap: 12px; }
 
     footer { padding: 48px 20px; }
-    .footer-top { grid-template-columns: 1fr; gap: 32px; }
-    .footer-bottom { font-size: .65rem; }
-
-    .lightbox-img { max-width: 94vw; max-height: 80vh; }
-    .lightbox-close, .video-modal-close { top: 16px; right: 16px; font-size: 1.3rem; }
-    .video-modal video { max-width: 94vw; }
-
-    .mobile-nav a { font-size: 1.35rem; }
+    .footer-top { grid-template-columns: 1fr; gap: 28px; margin-bottom: 32px; }
+    .footer-brand p { margin-top: 14px; }
   }
 
-  @media (max-width: 380px) {
-    .hero-title { font-size: clamp(2rem, 12vw, 2.6rem); }
-    .about-stats { flex-direction: column; }
-    .season-card { flex-basis: 170px; height: 260px; }
-    .masonry { columns: 1; }
+  /* RESPONSIVE ── small phones (≤420px) */
+  @media (max-width: 420px) {
+    .hero-title { font-size: clamp(2.4rem, 11vw, 3.2rem); }
     .weather-badge { display: none; }
-  }
-
-  /* Touch devices: hover-only content should still be reachable */
-  @media (hover: none) and (pointer: coarse) {
-    .exp-card-content { position: static; padding: 18px; }
-    .exp-icon, .exp-arrow { opacity: 1; transform: none; position: static; display: inline-flex; margin-bottom: 8px; }
-    .exp-card-overlay { background: linear-gradient(to top, rgba(0,0,0,.85) 0%, rgba(0,0,0,.35) 100%); }
-    .season-info { padding: 24px; }
-    .masonry-item-overlay { opacity: 1; background: linear-gradient(to top, rgba(0,0,0,.6) 0%, transparent 60%); }
+    .exp-grid { grid-template-columns: 1fr; }
+    .exp-card { aspect-ratio: 16/9; }
+    .masonry { columns: 1; }
+    .stat-num, .about-stats { font-size: 1.8rem; }
+    .planner-options { gap: 8px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -1004,20 +985,20 @@
     <button class="lang-btn" onclick="setLang('en')">EN</button>
     <span class="lang-sep">|</span>
     <button class="lang-btn" onclick="setLang('zh')">中文</button>
+    <button class="nav-toggle" id="navToggle" onclick="toggleMobileMenu()" aria-label="メニュー">
+      <span></span><span></span><span></span>
+    </button>
   </div>
-  <button class="menu-toggle" id="menuToggle" onclick="toggleMobileNav()" aria-label="メニュー">
-    <span></span><span></span><span></span>
-  </button>
 </nav>
 
-<div class="mobile-nav" id="mobileNav">
-  <a href="#about" onclick="toggleMobileNav()">開陽台について</a>
-  <a href="#seasons" onclick="toggleMobileNav()">見どころ</a>
-  <a href="#experiences" onclick="toggleMobileNav()">体験</a>
-  <a href="#planner" onclick="toggleMobileNav()">旅の計画</a>
-  <a href="#map-section" onclick="toggleMobileNav()">アクセス</a>
-  <a href="#news" onclick="toggleMobileNav()">お知らせ</a>
-  <div class="nav-right">
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" onclick="closeMobileMenu()">開陽台について</a>
+  <a href="#seasons" onclick="closeMobileMenu()">見どころ</a>
+  <a href="#experiences" onclick="closeMobileMenu()">体験</a>
+  <a href="#planner" onclick="closeMobileMenu()">旅の計画</a>
+  <a href="#map-section" onclick="closeMobileMenu()">アクセス</a>
+  <a href="#news" onclick="closeMobileMenu()">お知らせ</a>
+  <div class="mobile-menu-langs">
     <button class="lang-btn active" onclick="setLang('ja')">日本語</button>
     <span class="lang-sep">|</span>
     <button class="lang-btn" onclick="setLang('en')">EN</button>
@@ -1322,7 +1303,7 @@
           loading="lazy"
           allowfullscreen
           referrerpolicy="no-referrer-when-downgrade"
-          src="https://maps.google.com/maps?q=AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY&center=43.5641,144.9383&zoom=13&maptype=roadmap"
+          src="https://maps.google.com/maps?q=43.5641,144.9383&z=13&output=embed"
         ></iframe>
       </div>
       <div class="map-route-info" id="mapRouteInfo">
@@ -1346,7 +1327,7 @@
 <section id="gallery">
   <div class="gallery-header reveal">
     <h2>Gallery</h2>
-    <button class="gallery-btn">
+    <button class="gallery-btn" onclick="document.querySelectorAll('.masonry-item').forEach(function(el){el.style.display='';})">
       すべて見る
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </button>
@@ -1422,7 +1403,7 @@
 <section id="news">
   <div class="news-header reveal">
     <h2>お知らせ &amp; Events</h2>
-    <a href="#" style="color:var(--gold);text-decoration:none;font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;">
+    <a href="#news" style="color:var(--gold);text-decoration:none;font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;">
       すべて見る →
     </a>
   </div>
@@ -1482,27 +1463,27 @@
       <ul>
         <li><a href="#map-section">アクセス</a></li>
         <li><a href="#planner">旅の計画</a></li>
-        <li><a href="#">宿泊情報</a></li>
-        <li><a href="#">レストラン</a></li>
+        <li><a href="#news">宿泊情報</a></li>
+        <li><a href="#news">レストラン</a></li>
       </ul>
     </div>
     <div class="footer-col">
       <h4>Info</h4>
       <ul>
         <li><a href="#news">お知らせ</a></li>
-        <li><a href="#">よくある質問</a></li>
-        <li><a href="#">お問い合わせ</a></li>
-        <li><a href="https://kaiyoudai.jp" target="_blank">公式サイト</a></li>
+        <li><a href="#news">よくある質問</a></li>
+        <li><a href="#news">お問い合わせ</a></li>
+        <li><a href="https://www.shibetsutown.jp/" target="_blank" rel="noopener">公式サイト</a></li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
     <span>© 2027 Kaiyodai Horizon. All rights reserved. 標津町観光協会</span>
     <div class="footer-socials">
-      <a href="#">Instagram</a>
-      <a href="#">Twitter / X</a>
-      <a href="#">Facebook</a>
-      <a href="#">YouTube</a>
+      <a href="#" target="_blank" rel="noopener">Instagram</a>
+      <a href="#" target="_blank" rel="noopener">Twitter / X</a>
+      <a href="#" target="_blank" rel="noopener">Facebook</a>
+      <a href="#" target="_blank" rel="noopener">YouTube</a>
     </div>
     <span>北海道 標津郡 標津町</span>
   </div>
@@ -1528,11 +1509,22 @@ window.addEventListener('scroll', () => {
   document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 60);
 });
 
-function toggleMobileNav() {
-  document.getElementById('menuToggle').classList.toggle('open');
-  document.getElementById('mobileNav').classList.toggle('open');
-  document.body.style.overflow = document.getElementById('mobileNav').classList.contains('open') ? 'hidden' : '';
+// ── MOBILE MENU ──
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  const btn = document.getElementById('navToggle');
+  const isOpen = menu.classList.toggle('open');
+  btn.classList.toggle('open', isOpen);
+  document.body.style.overflow = isOpen ? 'hidden' : '';
 }
+function closeMobileMenu() {
+  document.getElementById('mobileMenu').classList.remove('open');
+  document.getElementById('navToggle').classList.remove('open');
+  document.body.style.overflow = '';
+}
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 900) closeMobileMenu();
+});
 
 
 // ── GOOGLE MAP — interactive route switcher with geolocation ──
@@ -1571,19 +1563,19 @@ function toggleMobileNav() {
   let userLocated = false;
   let activeIdx = -1;
 
-  // Build Google Maps Embed API URL for a place view (origin)
+  // Build a plain "place" embed URL (no API key required) for the origin view
   function placeUrl(lat, lng, zoom) {
-    return `https://www.google.com/maps/@43.546789,144.969015,2748m/data=!3m1!1e3?entry=ttu&g_ep=EgoyMDI2MDYyMi4wIKXMDSoASAFQAw%3D%3D=${lat},${lng}&zoom=${zoom}&maptype=roadmap`;
+    return `https://maps.google.com/maps?q=${lat},${lng}&z=${zoom}&output=embed`;
   }
 
-  // Build Directions embed URL (origin → destination)
+  // Build a driving-directions embed URL (origin → destination), no API key required
   function directionsUrl(oLat, oLng, dLat, dLng) {
-    return `https://www.google.co.jp/maps/place/%E9%96%8B%E9%99%BD%E5%8F%B0/@43.5962038,144.8634709,18939m/data=!3m1!1e3!4m14!1m7!3m6!1s0x5f6da6ac4c9a9a17:0x37e414b979352a5e!2z6ZaL6Zm95Y-w!8m2!3d43.6137191!4d144.8701534!16s%2Fg%2F122g3xjk!3m5!1s0x5f6da6ac4c9a9a17:0x37e414b979352a5e!8m2!3d43.6137191!4d144.8701534!16s%2Fg%2F122g3xjk?entry=ttu&g_ep=EgoyMDI2MDYyMi4wIKXMDSoASAFQAw%3D%3D=${dLat},${dLng}&mode=driving&language=ja`; 
+    return `https://maps.google.com/maps?saddr=${oLat},${oLng}&daddr=${dLat},${dLng}&output=embed`;
   }
 
-  // Google Maps deep-link for "Open in Maps" button
+  // Google Maps deep-link for the "Open in Maps" button (works on desktop and mobile)
   function mapsLink(oLat, oLng, dLat, dLng) {
-    return `https://www.google.co.jp/maps/place/%E9%96%8B%E9%99%BD%E5%8F%B0/@43.5962038,144.8634709,10195m/data=!3m1!1e3!4m6!3m5!1s0x5f6da6ac4c9a9a17:0x37e414b979352a5e!8m2!3d43.6137191!4d144.8701534!16s%2Fg%2F122g3xjk?entry=ttu&g_ep=EgoyMDI2MDYyMi4wIKXMDSoASAFQAw%3D%3D/${oLat},${oLng}/${dLat},${dLng}/@${(oLat+dLat)/2},${(oLng+dLng)/2},10z/data=!3m1!4b1!4m2!4m1!3e0`;
+    return `https://www.google.com/maps/dir/?api=1&origin=${oLat},${oLng}&destination=${dLat},${dLng}&travelmode=driving`;
   }
 
   function swapIframe(url) {
