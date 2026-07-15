@@ -1,0 +1,1640 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KAIYODAI HORIZON — Where the Earth Meets the Sky</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@200;300;400;500&family=Noto+Serif+JP:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --white: #ffffff;
+    --off-white: #f5f4f0;
+    --cream: #ede9e0;
+    --charcoal: #1a1a18;
+    --dark-green: #1d2b1f;
+    --sage: #4a5e4c;
+    --muted-sage: #8a9e8c;
+    --gold: #c8a96e;
+    --sky: #7aa8c4;
+    --glass: rgba(255,255,255,0.08);
+    --glass-border: rgba(255,255,255,0.15);
+  }
+
+  html { scroll-behavior: smooth; font-size: 16px; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--charcoal);
+    color: var(--white);
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 28px 48px;
+    transition: background .5s, padding .5s;
+  }
+  nav.scrolled {
+    background: rgba(20,22,18,.85);
+    backdrop-filter: blur(20px);
+    padding: 16px 48px;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+  }
+  .nav-logo {
+    display: flex; flex-direction: column; gap: 2px;
+    text-decoration: none; color: white;
+  }
+  .nav-logo-main {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem; font-weight: 600; letter-spacing: .25em;
+  }
+  .nav-logo-sub {
+    font-size: .6rem; font-weight: 300; letter-spacing: .4em;
+    color: rgba(255,255,255,.5); text-transform: uppercase;
+  }
+  .nav-links {
+    display: flex; gap: 36px; list-style: none;
+  }
+  .nav-links a {
+    color: rgba(255,255,255,.75); text-decoration: none;
+    font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 400;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: white; }
+  .nav-right {
+    display: flex; align-items: center; gap: 20px;
+    font-size: .7rem; letter-spacing: .1em; color: rgba(255,255,255,.6);
+  }
+  .lang-btn {
+    background: none; border: none; color: rgba(255,255,255,.6);
+    font-size: .7rem; cursor: pointer; letter-spacing: .1em;
+    font-family: 'Inter', sans-serif; padding: 4px 8px;
+    border-radius: 4px; transition: color .2s, background .2s;
+  }
+  .lang-btn.active, .lang-btn:hover { color: white; background: rgba(255,255,255,.1); }
+  .lang-sep { color: rgba(255,255,255,.25); }
+
+  /* ── HERO ── */
+  #hero {
+    position: relative; height: 100vh; overflow: hidden;
+    display: flex; align-items: center;
+  }
+  .hero-video-wrap {
+    position: absolute; inset: 0; z-index: 0;
+  }
+  .hero-video-wrap video {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+  .hero-overlay {
+    position: absolute; inset: 0; z-index: 2;
+    background: linear-gradient(
+      to bottom,
+      rgba(0,0,0,.15) 0%,
+      rgba(0,0,0,.05) 40%,
+      rgba(0,0,0,.3) 80%,
+      rgba(20,25,18,.95) 100%
+    );
+  }
+  .hero-content {
+    position: relative; z-index: 3;
+    padding: 0 80px; max-width: 900px;
+    margin-top: 60px;
+  }
+  .hero-eyebrow {
+    font-size: .65rem; letter-spacing: .35em; text-transform: uppercase;
+    color: var(--gold); font-weight: 400; margin-bottom: 28px;
+    opacity: 0; transform: translateY(20px);
+    animation: fadeUp .8s .3s forwards;
+  }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 7vw, 7rem);
+    font-weight: 300; line-height: 1.05;
+    letter-spacing: -.01em;
+    opacity: 0; transform: translateY(30px);
+    animation: fadeUp .9s .5s forwards;
+  }
+  .hero-title em { font-style: italic; color: rgba(255,255,255,.7); }
+  .hero-subtitle {
+    font-family: 'Noto Serif JP', serif;
+    font-size: .95rem; font-weight: 200;
+    color: rgba(255,255,255,.65); margin-top: 20px;
+    letter-spacing: .05em;
+    opacity: 0; transform: translateY(20px);
+    animation: fadeUp .8s .75s forwards;
+  }
+  .hero-cta-row {
+    display: flex; align-items: center; gap: 32px; margin-top: 48px;
+    opacity: 0; transform: translateY(20px);
+    animation: fadeUp .8s 1s forwards;
+  }
+  .play-btn {
+    display: flex; align-items: center; gap: 14px;
+    background: none; border: none; color: white; cursor: pointer;
+    font-family: 'Inter', sans-serif; font-size: .75rem;
+    letter-spacing: .15em; text-transform: uppercase;
+  }
+  .play-circle {
+    width: 52px; height: 52px; border-radius: 50%;
+    border: 1px solid rgba(255,255,255,.4);
+    display: flex; align-items: center; justify-content: center;
+    transition: border-color .3s, background .3s;
+  }
+  .play-circle svg { width: 16px; height: 16px; fill: white; margin-left: 3px; }
+  .play-btn:hover .play-circle {
+    border-color: white; background: rgba(255,255,255,.1);
+  }
+
+  /* scroll indicator */
+  .scroll-indicator {
+    position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+    z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 12px;
+    opacity: 0; animation: fadeIn 1s 1.5s forwards;
+  }
+  .scroll-text {
+    font-size: .6rem; letter-spacing: .4em; color: rgba(255,255,255,.4);
+    text-transform: uppercase;
+  }
+  .scroll-line {
+    width: 1px; height: 60px; background: rgba(255,255,255,.2);
+    position: relative; overflow: hidden;
+  }
+  .scroll-line::after {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 100%; height: 40%;
+    background: white;
+    animation: scrollDown 2s 2s infinite;
+  }
+
+  /* weather badge */
+  .weather-badge {
+    position: absolute; bottom: 48px; right: 48px; z-index: 3;
+    display: flex; align-items: center; gap: 12px;
+    background: rgba(255,255,255,.08);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 50px; padding: 10px 20px;
+    opacity: 0; animation: fadeIn 1s 1.8s forwards;
+  }
+  .weather-icon { font-size: 1.1rem; }
+  .weather-temp {
+    font-size: 1rem; font-weight: 300; letter-spacing: .05em;
+  }
+  .weather-desc { font-size: .7rem; color: rgba(255,255,255,.5); }
+
+  /* slide counter */
+  .slide-counter {
+    position: absolute; left: 48px; top: 50%; transform: translateY(-50%);
+    z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 8px;
+    opacity: 0; animation: fadeIn 1s 1.4s forwards;
+  }
+  .slide-num {
+    font-size: .65rem; letter-spacing: .1em; color: rgba(255,255,255,.5);
+    writing-mode: vertical-rl;
+  }
+  .slide-progress {
+    width: 1px; height: 80px;
+    background: rgba(255,255,255,.2);
+    position: relative;
+  }
+  .slide-progress-fill {
+    position: absolute; top: 0; left: 0;
+    width: 100%; background: white;
+    animation: slideProgress 5s linear infinite;
+  }
+
+  /* ── ABOUT ── */
+  #about {
+    background: var(--charcoal);
+    padding: 140px 80px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+    align-items: center;
+  }
+  .about-text h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 4vw, 4rem);
+    font-weight: 300; line-height: 1.2;
+    color: var(--cream);
+    margin-bottom: 32px;
+  }
+  .about-text h2 .ja {
+    font-family: 'Noto Serif JP', serif;
+    font-size: .65em; display: block;
+    color: var(--muted-sage); margin-bottom: 8px;
+    font-weight: 200; letter-spacing: .1em;
+  }
+  .about-text p {
+    font-size: .9rem; line-height: 1.9;
+    color: rgba(255,255,255,.5); font-weight: 300;
+    margin-bottom: 20px;
+  }
+  .about-link {
+    display: inline-flex; align-items: center; gap: 10px;
+    color: var(--gold); text-decoration: none;
+    font-size: .75rem; letter-spacing: .15em; text-transform: uppercase;
+    margin-top: 16px; transition: gap .2s;
+  }
+  .about-link:hover { gap: 18px; }
+  .about-link svg { width: 18px; height: 18px; }
+
+  .about-visual {
+    position: relative;
+  }
+  .about-img-main {
+    width: 100%; aspect-ratio: 3/4;
+    object-fit: cover; border-radius: 4px;
+    filter: brightness(.9) saturate(1.1);
+  }
+  .about-img-accent {
+    position: absolute; bottom: -40px; left: -40px;
+    width: 55%; aspect-ratio: 4/3;
+    object-fit: cover; border-radius: 4px;
+    border: 4px solid var(--charcoal);
+  }
+  .about-stats {
+    position: absolute; top: 40px; right: -40px;
+    background: rgba(255,255,255,.06);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 12px; padding: 28px;
+    display: flex; flex-direction: column; gap: 20px;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem; font-weight: 300; color: var(--gold);
+    display: block;
+  }
+  .stat-label {
+    font-size: .65rem; letter-spacing: .15em; text-transform: uppercase;
+    color: rgba(255,255,255,.4); margin-top: 4px; display: block;
+  }
+
+  /* ── SEASONS ── */
+  #seasons {
+    background: var(--dark-green);
+    padding: 120px 0;
+    overflow: hidden;
+  }
+  .seasons-header {
+    padding: 0 80px; margin-bottom: 60px;
+    display: flex; align-items: flex-end; justify-content: space-between;
+  }
+  .seasons-header h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3.5vw, 3.5rem); font-weight: 300;
+    color: var(--cream);
+  }
+  .seasons-header p {
+    max-width: 340px; text-align: right;
+    font-size: .85rem; line-height: 1.7;
+    color: rgba(255,255,255,.4); font-weight: 300;
+    font-family: 'Noto Serif JP', serif;
+  }
+  .seasons-track {
+    display: flex; gap: 12px;
+    padding: 0 80px; width: 100%;
+  }
+  .season-card {
+    flex: 1 1 0%; min-width: 0; height: 500px; border-radius: 6px;
+    overflow: hidden; position: relative; cursor: pointer;
+    transition: flex-grow .6s cubic-bezier(.25,.46,.45,.94);
+  }
+  .seasons-track:hover .season-card { flex-grow: 1; }
+  .seasons-track:hover .season-card:hover { flex-grow: 3.2; }
+  .season-bg {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform .8s cubic-bezier(.25,.46,.45,.94);
+  }
+  .season-card:hover .season-bg { transform: scale(1.06); }
+  .season-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,.7) 0%, transparent 60%);
+  }
+  .season-info {
+    position: absolute; bottom: 0; left: 0; right: 0; padding: 32px;
+    white-space: nowrap; overflow: hidden;
+    transition: padding .6s cubic-bezier(.25,.46,.45,.94);
+  }
+  .season-label {
+    font-size: .6rem; letter-spacing: .35em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 8px; display: block;
+  }
+  .season-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.8rem; font-weight: 300; display: block;
+    line-height: 1;
+  }
+  .season-name-en {
+    font-size: .75rem; letter-spacing: .2em; text-transform: uppercase;
+    color: rgba(255,255,255,.5); display: block; margin-top: 6px;
+  }
+
+  /* ── EXPERIENCES ── */
+  #experiences {
+    background: var(--charcoal);
+    padding: 140px 80px;
+  }
+  .exp-header {
+    text-align: center; margin-bottom: 80px;
+  }
+  .exp-header .eyebrow {
+    font-size: .65rem; letter-spacing: .35em; color: var(--gold);
+    text-transform: uppercase; margin-bottom: 20px; display: block;
+  }
+  .exp-header h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 4vw, 4.5rem); font-weight: 300;
+    color: var(--cream); line-height: 1.15;
+  }
+  .exp-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+  }
+  .exp-card {
+    aspect-ratio: 4/5; position: relative; overflow: hidden;
+    cursor: pointer;
+  }
+  .exp-card-bg {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform .7s cubic-bezier(.25,.46,.45,.94);
+    filter: brightness(.75) saturate(1.1);
+  }
+  .exp-card:hover .exp-card-bg { transform: scale(1.06); filter: brightness(.85) saturate(1.2); }
+  .exp-card-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,.65) 0%, rgba(0,0,0,.1) 60%);
+    transition: background .4s;
+  }
+  .exp-card:hover .exp-card-overlay {
+    background: linear-gradient(to top, rgba(0,0,0,.8) 0%, rgba(0,0,0,.2) 70%);
+  }
+  .exp-card-content {
+    position: absolute; bottom: 0; left: 0; right: 0; padding: 32px;
+  }
+  .exp-icon {
+    font-size: 1.5rem; margin-bottom: 12px; display: block;
+    transform: translateY(10px); opacity: 0;
+    transition: transform .4s, opacity .4s;
+  }
+  .exp-card:hover .exp-icon { transform: translateY(0); opacity: 1; }
+  .exp-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem; font-weight: 300;
+  }
+  .exp-name-ja {
+    font-family: 'Noto Serif JP', serif;
+    font-size: .75rem; color: rgba(255,255,255,.5);
+    display: block; margin-top: 4px;
+  }
+  .exp-arrow {
+    position: absolute; top: 24px; right: 24px;
+    width: 36px; height: 36px; border: 1px solid rgba(255,255,255,.25);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    opacity: 0; transform: scale(.8);
+    transition: opacity .3s, transform .3s;
+  }
+  .exp-card:hover .exp-arrow { opacity: 1; transform: scale(1); }
+  .exp-arrow svg { width: 14px; height: 14px; stroke: white; fill: none; }
+
+  /* ── MAP ── */
+  #map-section {
+    background: #0e1410;
+    padding: 120px 80px;
+  }
+  .map-inner {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
+  }
+  .map-right {
+    display: flex; flex-direction: column; gap: 0;
+  }
+  .map-text h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3.5vw, 3.5rem); font-weight: 300;
+    color: var(--cream); margin-bottom: 24px;
+  }
+  .map-text p {
+    font-size: .85rem; line-height: 1.85;
+    color: rgba(255,255,255,.45); font-weight: 300; margin-bottom: 40px;
+  }
+  .poi-list { display: flex; flex-direction: column; gap: 12px; }
+  .poi-item {
+    display: flex; align-items: center; gap: 16px;
+    padding: 16px 20px;
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 8px; cursor: pointer;
+    transition: background .25s, border-color .25s, transform .25s;
+  }
+  .poi-item:hover {
+    background: rgba(255,255,255,.08);
+    border-color: rgba(200,169,110,.3);
+    transform: translateX(6px);
+  }
+  .poi-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .poi-name { font-size: .85rem; font-weight: 300; flex: 1; }
+  .poi-name-ja {
+    font-family: 'Noto Serif JP', serif;
+    font-size: .7rem; color: rgba(255,255,255,.4);
+  }
+  .poi-dist { font-size: .7rem; color: rgba(255,255,255,.3); letter-spacing: .05em; }
+
+  .map-visual {
+    position: relative; height: 480px;
+    background: rgba(255,255,255,.03);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 24px; overflow: hidden;
+    box-shadow: 0 0 0 1px rgba(255,255,255,.04), 0 32px 64px rgba(0,0,0,.4);
+  }
+  .map-canvas-el {
+    width: 100%; height: 100%; display: block;
+  }
+  .map-iframe {
+    width: 100%; height: 100%; border: none; display: block;
+    transition: opacity .35s;
+  }
+  .poi-item.active {
+    background: rgba(200,169,110,.1) !important;
+    border-color: rgba(200,169,110,.5) !important;
+    transform: translateX(6px);
+  }
+  .poi-item.active .poi-name { color: var(--gold); }
+  .route-badge {
+    display: none; margin-left: auto;
+    font-size: .6rem; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--gold); border: 1px solid rgba(200,169,110,.35);
+    border-radius: 20px; padding: 3px 10px; white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .poi-item.active .route-badge { display: inline-block; }
+  .map-route-info {
+    display: flex; align-items: center; gap: 14px;
+    margin-top: 12px;
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(200,169,110,.18);
+    border-radius: 14px; padding: 14px 18px;
+    opacity: 0; transform: translateY(6px);
+    transition: opacity .35s, transform .35s;
+    pointer-events: none;
+  }
+  .map-route-info.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .route-info-left { display: flex; align-items: center; gap: 12px; flex: 1; }
+  .route-info-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .route-info-text { flex: 1; }
+  .route-info-name { font-size: .82rem; color: rgba(255,255,255,.85); font-weight: 400; }
+  .route-info-detail { font-size: .68rem; color: rgba(255,255,255,.38); margin-top: 3px; letter-spacing: .04em; }
+  .route-info-dist { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 300; color: var(--gold); white-space: nowrap; }
+  .route-open-btn {
+    font-size: .65rem; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--gold); text-decoration: none;
+    border: 1px solid rgba(200,169,110,.3); border-radius: 20px;
+    padding: 6px 14px; white-space: nowrap;
+    transition: background .2s, border-color .2s;
+  }
+  .route-open-btn:hover { background: rgba(200,169,110,.1); border-color: var(--gold); }
+  .map-location-bar {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 12px; font-size: .72rem;
+    color: rgba(255,255,255,.35); letter-spacing: .06em;
+  }
+  .map-location-bar .loc-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--gold); flex-shrink: 0;
+    box-shadow: 0 0 0 3px rgba(200,169,110,.2);
+  }
+  .map-locate-btn {
+    background: none; border: 1px solid rgba(255,255,255,.12);
+    border-radius: 20px; color: rgba(255,255,255,.45);
+    font-size: .65rem; letter-spacing: .1em; padding: 4px 12px;
+    cursor: pointer; font-family: 'Inter', sans-serif;
+    transition: border-color .2s, color .2s;
+    margin-left: auto;
+  }
+  .map-locate-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .map-locate-btn.locating { color: var(--gold); border-color: var(--gold); animation: pulse-loc .8s infinite; }
+  @keyframes pulse-loc { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+  /* ── GALLERY ── */
+  #gallery {
+    background: var(--charcoal);
+    padding: 120px 80px;
+  }
+  .gallery-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 48px;
+  }
+  .gallery-header h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3.5vw, 3.5rem); font-weight: 300;
+    color: var(--cream);
+  }
+  .gallery-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    color: var(--gold); text-decoration: none;
+    font-size: .75rem; letter-spacing: .15em; text-transform: uppercase;
+    transition: gap .2s; background: none; border: none; cursor: pointer;
+  }
+  .gallery-btn:hover { gap: 18px; }
+  .masonry {
+    columns: 3; column-gap: 3px;
+  }
+  .masonry-item {
+    break-inside: avoid; margin-bottom: 3px;
+    position: relative; overflow: hidden; cursor: pointer;
+  }
+  .masonry-item img {
+    width: 100%; display: block;
+    transition: transform .6s cubic-bezier(.25,.46,.45,.94), filter .4s;
+    filter: brightness(.9) saturate(1.05);
+  }
+  .masonry-item:hover img {
+    transform: scale(1.04); filter: brightness(1.05) saturate(1.2);
+  }
+  .masonry-item-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,.5) 0%, transparent 50%);
+    opacity: 0; transition: opacity .4s;
+    display: flex; align-items: flex-end; padding: 20px;
+  }
+  .masonry-item:hover .masonry-item-overlay { opacity: 1; }
+  .masonry-caption {
+    font-family: 'Noto Serif JP', serif;
+    font-size: .8rem; font-weight: 200; color: white;
+  }
+
+  /* ── PLANNER ── */
+  #planner {
+    background: linear-gradient(135deg, #0d1a10 0%, #1a2e1c 100%);
+    padding: 140px 80px;
+  }
+  .planner-inner {
+    max-width: 760px; margin: 0 auto; text-align: center;
+  }
+  .planner-inner .eyebrow {
+    font-size: .65rem; letter-spacing: .35em; color: var(--gold);
+    text-transform: uppercase; margin-bottom: 20px; display: block;
+  }
+  .planner-inner h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 4vw, 4rem); font-weight: 300;
+    color: var(--cream); margin-bottom: 20px; line-height: 1.15;
+  }
+  .planner-inner p {
+    font-size: .85rem; color: rgba(255,255,255,.45); line-height: 1.8;
+    margin-bottom: 48px; font-weight: 300;
+  }
+  .planner-ui {
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 16px; padding: 40px;
+    text-align: left;
+  }
+  .planner-question {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem; font-weight: 300;
+    color: rgba(255,255,255,.8); margin-bottom: 24px;
+  }
+  .planner-options {
+    display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 32px;
+  }
+  .planner-option {
+    padding: 10px 20px;
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 50px; background: none; color: rgba(255,255,255,.65);
+    font-size: .75rem; letter-spacing: .08em; cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: all .2s;
+  }
+  .planner-option.selected,
+  .planner-option:hover {
+    border-color: var(--gold); color: var(--gold);
+    background: rgba(200,169,110,.08);
+  }
+  .planner-submit {
+    width: 100%; padding: 16px; border-radius: 8px;
+    background: var(--gold); border: none; color: #0e1410;
+    font-family: 'Inter', sans-serif; font-size: .8rem;
+    letter-spacing: .15em; text-transform: uppercase; font-weight: 500;
+    cursor: pointer; transition: opacity .2s, transform .2s;
+  }
+  .planner-submit:hover { opacity: .9; transform: translateY(-1px); }
+  #planner-result {
+    margin-top: 28px; padding: 24px;
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 12px;
+    font-size: .85rem; line-height: 1.8;
+    color: rgba(255,255,255,.7); display: none;
+  }
+  #planner-result.visible { display: block; animation: fadeIn .5s forwards; }
+
+  /* ── NEWS ── */
+  #news {
+    background: var(--charcoal);
+    padding: 120px 80px;
+  }
+  .news-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 48px;
+  }
+  .news-header h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3vw, 3rem); font-weight: 300;
+    color: var(--cream);
+  }
+  .news-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+  }
+  .news-card {
+    background: rgba(255,255,255,.03);
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 10px; overflow: hidden;
+    cursor: pointer; transition: transform .3s, border-color .3s;
+  }
+  .news-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(200,169,110,.25);
+  }
+  .news-card-img {
+    width: 100%; aspect-ratio: 16/9; object-fit: cover;
+    filter: brightness(.85);
+    transition: transform .5s;
+  }
+  .news-card:hover .news-card-img { transform: scale(1.03); }
+  .news-card-body { padding: 24px; }
+  .news-tag {
+    font-size: .6rem; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 10px; display: block;
+  }
+  .news-title {
+    font-family: 'Noto Serif JP', serif; font-weight: 300;
+    font-size: 1rem; line-height: 1.6;
+    color: rgba(255,255,255,.8); margin-bottom: 16px;
+  }
+  .news-meta {
+    font-size: .7rem; color: rgba(255,255,255,.3);
+    letter-spacing: .05em;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #0a0f0b;
+    padding: 80px;
+    border-top: 1px solid rgba(255,255,255,.06);
+  }
+  .footer-top {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px; margin-bottom: 60px;
+  }
+  .footer-brand .logo-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem; font-weight: 600; letter-spacing: .2em;
+    color: white; display: block; margin-bottom: 4px;
+  }
+  .footer-brand .logo-sub {
+    font-size: .6rem; letter-spacing: .4em;
+    color: rgba(255,255,255,.3);
+  }
+  .footer-brand p {
+    margin-top: 20px; font-size: .8rem; line-height: 1.8;
+    color: rgba(255,255,255,.3); font-weight: 300;
+  }
+  .footer-col h4 {
+    font-size: .65rem; letter-spacing: .25em; text-transform: uppercase;
+    color: rgba(255,255,255,.4); margin-bottom: 20px;
+  }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .footer-col ul a {
+    font-size: .8rem; color: rgba(255,255,255,.5); text-decoration: none;
+    transition: color .2s;
+  }
+  .footer-col ul a:hover { color: white; }
+  .footer-bottom {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-top: 32px; border-top: 1px solid rgba(255,255,255,.06);
+    font-size: .7rem; color: rgba(255,255,255,.25); letter-spacing: .05em;
+  }
+  .footer-socials { display: flex; gap: 16px; }
+  .footer-socials a {
+    color: rgba(255,255,255,.3); text-decoration: none; font-size: .7rem;
+    letter-spacing: .1em; transition: color .2s;
+  }
+  .footer-socials a:hover { color: var(--gold); }
+
+  /* ── LIGHTBOX ── */
+  .lightbox {
+    position: fixed; inset: 0; z-index: 5000;
+    background: rgba(0,0,0,.95); backdrop-filter: blur(20px);
+    display: none; align-items: center; justify-content: center;
+  }
+  .lightbox.open { display: flex; animation: fadeIn .3s forwards; }
+  .lightbox-img {
+    max-width: 90vw; max-height: 90vh;
+    object-fit: contain; border-radius: 4px;
+  }
+  .lightbox-close {
+    position: absolute; top: 32px; right: 40px;
+    background: none; border: none; color: white; cursor: pointer;
+    font-size: 1.5rem; opacity: .5; transition: opacity .2s;
+  }
+  .lightbox-close:hover { opacity: 1; }
+
+  /* VIDEO MODAL */
+  .video-modal {
+    position: fixed; inset: 0; z-index: 5000;
+    background: rgba(0,0,0,.97); backdrop-filter: blur(20px);
+    display: none; align-items: center; justify-content: center;
+  }
+  .video-modal.open { display: flex; animation: fadeIn .3s forwards; }
+  .video-modal video {
+    max-width: 90vw; max-height: 85vh;
+    border-radius: 8px;
+  }
+  .video-modal-close {
+    position: absolute; top: 32px; right: 40px;
+    background: none; border: none; color: white; cursor: pointer;
+    font-size: 1.5rem; opacity: .5; transition: opacity .2s;
+  }
+  .video-modal-close:hover { opacity: 1; }
+
+  /* scroll reveal */
+  .reveal {
+    opacity: 0; transform: translateY(40px);
+    transition: opacity .8s cubic-bezier(.25,.46,.45,.94),
+                transform .8s cubic-bezier(.25,.46,.45,.94);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: .1s; }
+  .reveal-delay-2 { transition-delay: .2s; }
+  .reveal-delay-3 { transition-delay: .3s; }
+
+  /* KEYFRAMES */
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; } to { opacity: 1; }
+  }
+  @keyframes scrollDown {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(300%); }
+  }
+  @keyframes slideProgress {
+    0% { height: 0%; }
+    100% { height: 100%; }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  @keyframes pulse-ring {
+    0% { transform: scale(1); opacity: .6; }
+    100% { transform: scale(2.2); opacity: 0; }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 20px 24px; }
+    nav.scrolled { padding: 14px 24px; }
+    .nav-links { display: none; }
+    .hero-content { padding: 0 32px; }
+    #about { grid-template-columns: 1fr; padding: 80px 32px; }
+    .about-img-accent, .about-stats { display: none; }
+    #seasons { padding: 80px 0; }
+    .seasons-header { padding: 0 32px; flex-direction: column; align-items: flex-start; gap: 12px; }
+    .seasons-track {
+      padding: 0 32px; overflow-x: auto; scrollbar-width: none;
+      gap: 10px;
+    }
+    .seasons-track::-webkit-scrollbar { display: none; }
+    .season-card { flex: 0 0 260px; height: 380px; }
+    .seasons-track:hover .season-card,
+    .seasons-track:hover .season-card:hover { flex-grow: 0; }
+    #experiences { padding: 80px 32px; }
+    .exp-grid { grid-template-columns: 1fr; }
+    .exp-card { aspect-ratio: 16/9; }
+    #map-section { padding: 80px 32px; }
+    .map-inner { grid-template-columns: 1fr; gap: 40px; }
+    .map-visual { height: 300px; }
+    #gallery { padding: 80px 32px; }
+    .masonry { columns: 2; }
+    #planner { padding: 80px 32px; }
+    #news { padding: 80px 32px; }
+    .news-grid { grid-template-columns: 1fr; }
+    footer { padding: 60px 32px; }
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a href="#" class="nav-logo">
+    <span class="nav-logo-main">KAIYODAI</span>
+    <span class="nav-logo-sub">Horizon</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">開陽台について</a></li>
+    <li><a href="#seasons">見どころ</a></li>
+    <li><a href="#experiences">体験</a></li>
+    <li><a href="#planner">旅の計画</a></li>
+    <li><a href="#map-section">アクセス</a></li>
+    <li><a href="#news">お知らせ</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="lang-btn active" onclick="setLang('ja')">日本語</button>
+    <span class="lang-sep">|</span>
+    <button class="lang-btn" onclick="setLang('en')">EN</button>
+    <span class="lang-sep">|</span>
+    <button class="lang-btn" onclick="setLang('zh')">中文</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-video-wrap">
+    <video autoplay muted loop playsinline poster="https://res.cloudinary.com/dtvkj5tiq/video/upload/v1782362982/0625_1_1_1_zsyczr.mp4">
+      <source src="https://res.cloudinary.com/dtvkj5tiq/video/upload/v1782362982/0625_1_1_1_zsyczr.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="hero-overlay"></div>
+
+  <div class="slide-counter">
+    <span class="slide-num">01 / 05</span>
+    <div class="slide-progress"><div class="slide-progress-fill"></div></div>
+  </div>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow">北海道・標津町 — Hokkaido, Japan</p>
+    <h1 class="hero-title">
+      Where the<br><em>Earth</em> Meets<br>the Sky
+    </h1>
+    <p class="hero-subtitle">地球と空が出会う場所、開陽台へようこそ</p>
+    <div class="hero-cta-row">
+      <button class="play-btn" onclick="openVideoModal()">
+        <div class="play-circle">
+          <svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+        </div>
+        <span>PLAY FILM</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="scroll-indicator">
+    <span class="scroll-text">Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+
+  <div class="weather-badge">
+    <span class="weather-icon">☀️</span>
+    <div>
+      <div class="weather-temp">15°C</div>
+      <div class="weather-desc">晴れ — Sunny</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-text reveal">
+    <h2>
+      <span class="ja">果てしない水平線が、あなたを待っている。</span>
+      The Endless Horizon of Kaiyodai
+    </h2>
+    <p>北海道の東、標津町にある開陽台。330度の大パノラマが広がるこの場所は、訪れる人の心を解き放ち、自然の雄大さを感じさせてくれます。</p>
+    <p>Perched at 270 meters above sea level, Kaiyodai offers one of Japan's most breathtaking 330-degree panoramas. Rolling green hills, morning mist, grazing cattle, and a sky that seems to curve with the earth itself.</p>
+    <a href="#experiences" class="about-link">
+      探索する — Explore
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+  <div class="about-visual reveal reveal-delay-2">
+    <img class="about-img-main"
+      src="https://images.unsplash.com/photo-1717735418396-b972808504ff?w=800&auto=format"
+      alt="Kaiyodai panorama">
+    <img class="about-img-accent"
+      src="https://images.unsplash.com/photo-1688054004870-b6057c0020b2?w=600&auto=format"
+      alt="Grazing cattle in morning mist">
+    <div class="about-stats">
+      <div class="stat">
+        <span class="stat-num">330°</span>
+        <span class="stat-label">Panorama</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">270m</span>
+        <span class="stat-label">Elevation</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">4</span>
+        <span class="stat-label">Seasons</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEASONS -->
+<section id="seasons">
+  <div class="seasons-header reveal">
+    <h2>四季の彩り<br><small style="font-size:.5em;color:rgba(255,255,255,.4);letter-spacing:.2em">FOUR SEASONS</small></h2>
+    <p>春の新緑、夏の深い緑、秋の紅葉、冬の白銀。<br>開陽台は、四季を通して美しい表情を見せてくれます。</p>
+  </div>
+  <div class="seasons-track">
+    <div class="season-card">
+      <img class="season-bg"
+        src="https://images.unsplash.com/photo-1522383225653-ed111181a951?w=1400&auto=format&q=80"
+        alt="Spring Kaiyodai">
+      <div class="season-overlay"></div>
+      <div class="season-info">
+        <span class="season-label">April — May</span>
+        <span class="season-name">春</span>
+        <span class="season-name-en">SPRING</span>
+      </div>
+    </div>
+    <div class="season-card">
+      <img class="season-bg"
+        src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1400&auto=format&q=80"
+        alt="Summer Kaiyodai">
+      <div class="season-overlay"></div>
+      <div class="season-info">
+        <span class="season-label">June — August</span>
+        <span class="season-name">夏</span>
+        <span class="season-name-en">SUMMER</span>
+      </div>
+    </div>
+    <div class="season-card">
+      <img class="season-bg"
+        src="https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=1400&auto=format&q=80"
+        alt="Autumn Kaiyodai">
+      <div class="season-overlay"></div>
+      <div class="season-info">
+        <span class="season-label">September — October</span>
+        <span class="season-name">秋</span>
+        <span class="season-name-en">AUTUMN</span>
+      </div>
+    </div>
+    <div class="season-card">
+      <img class="season-bg"
+        src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=1400&auto=format&q=80"
+        alt="Winter Kaiyodai">
+      <div class="season-overlay"></div>
+      <div class="season-info">
+        <span class="season-label">November — March</span>
+        <span class="season-name">冬</span>
+        <span class="season-name-en">WINTER</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCES -->
+<section id="experiences">
+  <div class="exp-header reveal">
+    <span class="eyebrow">Discover</span>
+    <h2>Unforgettable<br><em style="font-style:italic;color:rgba(245,244,240,.6)">Experiences</em></h2>
+  </div>
+  <div class="exp-grid reveal reveal-delay-1">
+    <div class="exp-card" onclick="openLightbox(this)">
+      <img class="exp-card-bg"
+        src="https://images.unsplash.com/photo-1445107975097-fed879680cd8?w=800&auto=format"
+        alt="Scenic View">
+      <div class="exp-card-overlay"></div>
+      <div class="exp-arrow">
+        <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10" stroke-width="1.5"/></svg>
+      </div>
+      <div class="exp-card-content">
+        <span class="exp-icon">🌄</span>
+        <span class="exp-name">Scenic View</span>
+        <span class="exp-name-ja">絶景スポット</span>
+      </div>
+    </div>
+    <div class="exp-card" onclick="openLightbox(this)">
+      <img class="exp-card-bg"
+        src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&auto=format"
+        alt="Nature Walk">
+      <div class="exp-card-overlay"></div>
+      <div class="exp-arrow">
+        <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10" stroke-width="1.5"/></svg>
+      </div>
+      <div class="exp-card-content">
+        <span class="exp-icon">🌿</span>
+        <span class="exp-name">Nature Walk</span>
+        <span class="exp-name-ja">自然散策</span>
+      </div>
+    </div>
+    <div class="exp-card" onclick="openLightbox(this)">
+      <img class="exp-card-bg"
+        src="https://images.unsplash.com/photo-1742626157111-59f3f1019a8a?w=800&auto=format"
+        alt="Stargazing">
+      <div class="exp-card-overlay"></div>
+      <div class="exp-arrow">
+        <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10" stroke-width="1.5"/></svg>
+      </div>
+      <div class="exp-card-content">
+        <span class="exp-icon">✨</span>
+        <span class="exp-name">Stargazing</span>
+        <span class="exp-name-ja">星空観察</span>
+      </div>
+    </div>
+    <div class="exp-card" onclick="openLightbox(this)">
+      <img class="exp-card-bg"
+        src="https://images.unsplash.com/photo-1753563715245-63723475936d?w=800&auto=format"
+        alt="Wildlife">
+      <div class="exp-card-overlay"></div>
+      <div class="exp-arrow">
+        <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10" stroke-width="1.5"/></svg>
+      </div>
+      <div class="exp-card-content">
+        <span class="exp-icon">🐄</span>
+        <span class="exp-name">Wildlife</span>
+        <span class="exp-name-ja">牧場体験</span>
+      </div>
+    </div>
+    <div class="exp-card" onclick="openLightbox(this)">
+      <img class="exp-card-bg"
+        src="https://images.unsplash.com/photo-1756020223353-5562a35be100?w=800&auto=format"
+        alt="Cycling">
+      <div class="exp-card-overlay"></div>
+      <div class="exp-arrow">
+        <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10" stroke-width="1.5"/></svg>
+      </div>
+      <div class="exp-card-content">
+        <span class="exp-icon">🚴</span>
+        <span class="exp-name">Cycling</span>
+        <span class="exp-name-ja">サイクリング</span>
+      </div>
+    </div>
+    <div class="exp-card" onclick="openLightbox(this)">
+      <img class="exp-card-bg"
+        src="https://images.unsplash.com/photo-1504701954957-2010ec3bcec1?w=800&auto=format"
+        alt="Photography">
+      <div class="exp-card-overlay"></div>
+      <div class="exp-arrow">
+        <svg viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H7M17 7v10" stroke-width="1.5"/></svg>
+      </div>
+      <div class="exp-card-content">
+        <span class="exp-icon">📷</span>
+        <span class="exp-name">Photography</span>
+        <span class="exp-name-ja">フォトスポット</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MAP -->
+<section id="map-section">
+  <div class="map-inner">
+    <div class="map-text reveal">
+      <p style="font-size:.85rem; line-height:1.85; color:rgba(255,255,255,.45); font-weight:300; margin-bottom:40px;">開陽台を中心に、北海道東部の絶景スポットをご紹介します。雄大な自然と感動の景色があなたを待っています。</p>
+      <div class="poi-list">
+        <div class="poi-item" data-poi="0" onclick="selectPoi(0)">
+          <div class="poi-dot" style="background:#c8a96e"></div>
+          <div style="flex:1">
+            <div class="poi-name">開陽台</div>
+            <div class="poi-name-ja">Kaiyodai Observation Deck</div>
+          </div>
+          <span class="poi-dist">起点</span>
+          <span class="route-badge">▶ 出発地</span>
+        </div>
+        <div class="poi-item" data-poi="1" onclick="selectPoi(1)">
+          <div class="poi-dot" style="background:#7aa8c4"></div>
+          <div style="flex:1">
+            <div class="poi-name">摩周湖</div>
+            <div class="poi-name-ja">Lake Mashu</div>
+          </div>
+          <span class="poi-dist">65 km</span>
+          <span class="route-badge">ルート表示</span>
+        </div>
+        <div class="poi-item" data-poi="2" onclick="selectPoi(2)">
+          <div class="poi-dot" style="background:#8a9e8c"></div>
+          <div style="flex:1">
+            <div class="poi-name">野付半島</div>
+            <div class="poi-name-ja">Notsuke Peninsula</div>
+          </div>
+          <span class="poi-dist">38 km</span>
+          <span class="route-badge">ルート表示</span>
+        </div>
+        <div class="poi-item" data-poi="3" onclick="selectPoi(3)">
+          <div class="poi-dot" style="background:#c4877a"></div>
+          <div style="flex:1">
+            <div class="poi-name">養老牛温泉</div>
+            <div class="poi-name-ja">Yoroushi Onsen</div>
+          </div>
+          <span class="poi-dist">22 km</span>
+          <span class="route-badge">ルート表示</span>
+        </div>
+        <div class="poi-item" data-poi="4" onclick="selectPoi(4)">
+          <div class="poi-dot" style="background:#a4c4a8"></div>
+          <div style="flex:1">
+            <div class="poi-name">知床</div>
+            <div class="poi-name-ja">Shiretoko World Heritage</div>
+          </div>
+          <span class="poi-dist">120 km</span>
+          <span class="route-badge">ルート表示</span>
+        </div>
+      </div>
+    </div>
+    <div class="map-right reveal reveal-delay-2">
+      <div class="map-location-bar">
+        <div class="loc-dot"></div>
+        <span id="locationLabel">開陽台を起点として表示中</span>
+        <button class="map-locate-btn" id="locateBtn" onclick="locateUser()">📍 現在地を使う</button>
+      </div>
+      <div class="map-visual">
+        <iframe
+          id="googleMap"
+          class="map-iframe"
+          loading="lazy"
+          allowfullscreen
+          referrerpolicy="no-referrer-when-downgrade"
+          src="https://maps.google.com/maps?q=AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY&center=43.5641,144.9383&zoom=13&maptype=roadmap"
+        ></iframe>
+      </div>
+      <div class="map-route-info" id="mapRouteInfo">
+        <div class="route-info-left">
+          <div class="route-info-dot" id="routeInfoDot"></div>
+          <div class="route-info-text">
+            <div class="route-info-name" id="routeInfoName"></div>
+            <div class="route-info-detail" id="routeInfoDetail"></div>
+          </div>
+        </div>
+        <div class="route-info-dist" id="routeInfoDist"></div>
+        <a id="routeOpenLink" href="#" target="_blank" class="route-open-btn">
+          Google Mapsで開く →
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="gallery-header reveal">
+    <h2>Gallery</h2>
+    <button class="gallery-btn">
+      すべて見る
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+  <div class="masonry reveal reveal-delay-1">
+    <div class="masonry-item" onclick="openLightboxImg('https://images.unsplash.com/photo-1717735418396-b972808504ff?w=1200')">
+      <img src="https://images.unsplash.com/photo-1717735418396-b972808504ff?w=600&auto=format" alt="Aerial panorama of farmland">
+      <div class="masonry-item-overlay"><span class="masonry-caption">330度の大パノラマ</span></div>
+    </div>
+    <div class="masonry-item" onclick="openLightboxImg('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200')">
+      <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&auto=format" alt="Hokkaido hills">
+      <div class="masonry-item-overlay"><span class="masonry-caption">緑の丘</span></div>
+    </div>
+    <div class="masonry-item" onclick="openLightboxImg('https://images.unsplash.com/photo-1742626157111-59f3f1019a8a?w=1200')">
+      <img src="https://images.unsplash.com/photo-1742626157111-59f3f1019a8a?w=600&auto=format" alt="Starry sky">
+      <div class="masonry-item-overlay"><span class="masonry-caption">満天の星空</span></div>
+    </div>
+    <div class="masonry-item" onclick="openLightboxImg('https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=1200')">
+      <img src="https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=600&auto=format" alt="Autumn leaves">
+      <div class="masonry-item-overlay"><span class="masonry-caption">秋の色彩</span></div>
+    </div>
+    <div class="masonry-item" onclick="openLightboxImg('https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=1200')">
+      <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=600&auto=format" alt="Winter snow">
+      <div class="masonry-item-overlay"><span class="masonry-caption">冬の白銀</span></div>
+    </div>
+    <div class="masonry-item" onclick="openLightboxImg('https://images.unsplash.com/photo-1688054004870-b6057c0020b2?w=1200')">
+      <img src="https://images.unsplash.com/photo-1688054004870-b6057c0020b2?w=600&auto=format" alt="Cattle grazing in morning mist">
+      <div class="masonry-item-overlay"><span class="masonry-caption">朝霧の牧場</span></div>
+    </div>
+    <div class="masonry-item" onclick="openLightboxImg('https://images.unsplash.com/photo-1445107975097-fed879680cd8?w=1200')">
+      <img src="https://images.unsplash.com/photo-1445107975097-fed879680cd8?w=600&auto=format" alt="Misty landscape">
+      <div class="masonry-item-overlay"><span class="masonry-caption">朝霧の大地</span></div>
+    </div>
+    <div class="masonry-item" onclick="openLightboxImg('https://images.unsplash.com/photo-1753563715245-63723475936d?w=1200')">
+      <img src="https://images.unsplash.com/photo-1753563715245-63723475936d?w=600&auto=format" alt="Cattle grazing">
+      <div class="masonry-item-overlay"><span class="masonry-caption">牧場の牛たち</span></div>
+    </div>
+    <div class="masonry-item" onclick="openLightboxImg('https://images.unsplash.com/photo-1756020223353-5562a35be100?w=1200')">
+      <img src="https://images.unsplash.com/photo-1756020223353-5562a35be100?w=600&auto=format" alt="Milk Road">
+      <div class="masonry-item-overlay"><span class="masonry-caption">ミルクロード</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- AI PLANNER -->
+<section id="planner">
+  <div class="planner-inner">
+    <span class="eyebrow">AI Travel Guide</span>
+    <h2>Plan Your<br>Perfect Journey</h2>
+    <p>あなたの旅をAIがサポート。ご希望に合わせた最適なルートをご提案します。<br>Let our AI craft a personalized itinerary just for you.</p>
+    <div class="planner-ui">
+      <p class="planner-question">旅行は何日間ですか？ / How many days?</p>
+      <div class="planner-options" id="dayOptions">
+        <button class="planner-option" onclick="selectOption(this,'days','1日')">1日 / 1 Day</button>
+        <button class="planner-option" onclick="selectOption(this,'days','2日')">2日 / 2 Days</button>
+        <button class="planner-option" onclick="selectOption(this,'days','3日')">3日 / 3 Days</button>
+        <button class="planner-option" onclick="selectOption(this,'days','4日以上')">4日以上 / 4+ Days</button>
+      </div>
+      <p class="planner-question">お好みは？ / Your interests?</p>
+      <div class="planner-options" id="interestOptions">
+        <button class="planner-option" onclick="selectOption(this,'interest','自然')">🌿 自然 / Nature</button>
+        <button class="planner-option" onclick="selectOption(this,'interest','写真')">📷 写真 / Photography</button>
+        <button class="planner-option" onclick="selectOption(this,'interest','星空')">✨ 星空 / Stargazing</button>
+        <button class="planner-option" onclick="selectOption(this,'interest','温泉')">♨️ 温泉 / Onsen</button>
+      </div>
+      <button class="planner-submit" onclick="generatePlan()">✦ プランを作成 — Generate My Plan</button>
+      <div id="planner-result"></div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWS -->
+<section id="news">
+  <div class="news-header reveal">
+    <h2>お知らせ &amp; Events</h2>
+    <a href="#" style="color:var(--gold);text-decoration:none;font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;">
+      すべて見る →
+    </a>
+  </div>
+  <div class="news-grid reveal reveal-delay-1">
+    <div class="news-card">
+      <img class="news-card-img"
+        src="https://images.unsplash.com/photo-1522383225653-ed111181a951?w=600&auto=format"
+        alt="Spring event">
+      <div class="news-card-body">
+        <span class="news-tag">イベント / Event</span>
+        <p class="news-title">春の開陽台フォトコンテスト2025開催</p>
+        <span class="news-meta">2025.04.01</span>
+      </div>
+    </div>
+    <div class="news-card">
+      <img class="news-card-img"
+        src="https://images.unsplash.com/photo-1742626157111-59f3f1019a8a?w=600&auto=format"
+        alt="Stargazing">
+      <div class="news-card-body">
+        <span class="news-tag">体験 / Experience</span>
+        <p class="news-title">夏の星空観察ナイトツアー予約開始</p>
+        <span class="news-meta">2025.06.15</span>
+      </div>
+    </div>
+    <div class="news-card">
+      <img class="news-card-img"
+        src="https://images.unsplash.com/photo-1756020223353-5562a35be100?w=600&auto=format"
+        alt="Cycling">
+      <div class="news-card-body">
+        <span class="news-tag">お知らせ / Notice</span>
+        <p class="news-title">レンタサイクルサービス営業時間延長のお知らせ</p>
+        <span class="news-meta">2025.05.20</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <span class="logo-text">KAIYODAI</span>
+      <span class="logo-sub">HORIZON</span>
+      <p>北海道・標津町の開陽台。<br>Where the Earth Meets the Sky.<br>大地と空が出会う、感動の絶景地。</p>
+    </div>
+    <div class="footer-col">
+      <h4>Explore</h4>
+      <ul>
+        <li><a href="#about">開陽台について</a></li>
+        <li><a href="#seasons">四季の彩り</a></li>
+        <li><a href="#experiences">体験</a></li>
+        <li><a href="#gallery">ギャラリー</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Visit</h4>
+      <ul>
+        <li><a href="#map-section">アクセス</a></li>
+        <li><a href="#planner">旅の計画</a></li>
+        <li><a href="#">宿泊情報</a></li>
+        <li><a href="#">レストラン</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Info</h4>
+      <ul>
+        <li><a href="#news">お知らせ</a></li>
+        <li><a href="#">よくある質問</a></li>
+        <li><a href="#">お問い合わせ</a></li>
+        <li><a href="https://kaiyoudai.jp" target="_blank">公式サイト</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2027 Kaiyodai Horizon. All rights reserved. 標津町観光協会</span>
+    <div class="footer-socials">
+      <a href="#">Instagram</a>
+      <a href="#">Twitter / X</a>
+      <a href="#">Facebook</a>
+      <a href="#">YouTube</a>
+    </div>
+    <span>北海道 標津郡 標津町</span>
+  </div>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close">✕</button>
+  <img class="lightbox-img" id="lightboxImg" src="" alt="">
+</div>
+
+<!-- VIDEO MODAL -->
+<div class="video-modal" id="videoModal">
+  <button class="video-modal-close" onclick="closeVideoModal()">✕</button>
+  <video id="modalVideo" controls autoplay muted loop>
+    <source src="https://res.cloudinary.com/dtvkj5tiq/video/upload/v1782362982/0625_1_1_1_zsyczr.mp4" type="video/mp4">
+  </video>
+</div>
+
+<script>
+// ── NAV ──
+window.addEventListener('scroll', () => {
+  document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 60);
+});
+
+
+// ── GOOGLE MAP — interactive route switcher with geolocation ──
+(function() {
+  // Destination POIs (real coordinates)
+  const POIS = [
+    {
+      label: '開陽台', sub: 'Kaiyodai Observation Deck',
+      dist: '起点', time: '', color: '#c8a96e',
+      lat: 43.5641, lng: 144.9383, isOrigin: true,
+    },
+    {
+      label: '摩周湖', sub: 'Lake Mashu',
+      dist: '65 km', time: '約 1時間', color: '#7aa8c4',
+      lat: 43.5744, lng: 144.5294,
+    },
+    {
+      label: '野付半島', sub: 'Notsuke Peninsula',
+      dist: '38 km', time: '約 45分', color: '#8a9e8c',
+      lat: 43.4317, lng: 145.1806,
+    },
+    {
+      label: '養老牛温泉', sub: 'Yoroushi Onsen',
+      dist: '22 km', time: '約 30分', color: '#c4877a',
+      lat: 43.4610, lng: 144.9631,
+    },
+    {
+      label: '知床', sub: 'Shiretoko World Heritage',
+      dist: '120 km', time: '約 2時間', color: '#a4c4a8',
+      lat: 44.0771, lng: 145.1311,
+    },
+  ];
+
+  // Origin defaults to Kaiyodai; updated when user shares location
+  let originLat = 43.5641, originLng = 144.9383;
+  let userLocated = false;
+  let activeIdx = -1;
+
+  // Build Google Maps Embed API URL for a place view (origin)
+  function placeUrl(lat, lng, zoom) {
+    return `https://www.google.com/maps/@43.546789,144.969015,2748m/data=!3m1!1e3?entry=ttu&g_ep=EgoyMDI2MDYyMi4wIKXMDSoASAFQAw%3D%3D=${lat},${lng}&zoom=${zoom}&maptype=roadmap`;
+  }
+
+  // Build Directions embed URL (origin → destination)
+  function directionsUrl(oLat, oLng, dLat, dLng) {
+    return `https://www.google.co.jp/maps/place/%E9%96%8B%E9%99%BD%E5%8F%B0/@43.5962038,144.8634709,18939m/data=!3m1!1e3!4m14!1m7!3m6!1s0x5f6da6ac4c9a9a17:0x37e414b979352a5e!2z6ZaL6Zm95Y-w!8m2!3d43.6137191!4d144.8701534!16s%2Fg%2F122g3xjk!3m5!1s0x5f6da6ac4c9a9a17:0x37e414b979352a5e!8m2!3d43.6137191!4d144.8701534!16s%2Fg%2F122g3xjk?entry=ttu&g_ep=EgoyMDI2MDYyMi4wIKXMDSoASAFQAw%3D%3D=${dLat},${dLng}&mode=driving&language=ja`; 
+  }
+
+  // Google Maps deep-link for "Open in Maps" button
+  function mapsLink(oLat, oLng, dLat, dLng) {
+    return `https://www.google.co.jp/maps/place/%E9%96%8B%E9%99%BD%E5%8F%B0/@43.5962038,144.8634709,10195m/data=!3m1!1e3!4m6!3m5!1s0x5f6da6ac4c9a9a17:0x37e414b979352a5e!8m2!3d43.6137191!4d144.8701534!16s%2Fg%2F122g3xjk?entry=ttu&g_ep=EgoyMDI2MDYyMi4wIKXMDSoASAFQAw%3D%3D/${oLat},${oLng}/${dLat},${dLng}/@${(oLat+dLat)/2},${(oLng+dLng)/2},10z/data=!3m1!4b1!4m2!4m1!3e0`;
+  }
+
+  function swapIframe(url) {
+    const iframe = document.getElementById('googleMap');
+    iframe.style.opacity = '0';
+    setTimeout(() => {
+      iframe.src = url;
+      iframe.onload = () => { iframe.style.opacity = '1'; };
+      // Fallback in case onload doesn't fire
+      setTimeout(() => { iframe.style.opacity = '1'; }, 1500);
+    }, 300);
+  }
+
+  function updateOriginLabel() {
+    const lbl = document.getElementById('locationLabel');
+    if (userLocated) {
+      lbl.textContent = '現在地を起点として表示中 ✓';
+      lbl.style.color = 'rgba(200,169,110,.8)';
+    } else {
+      lbl.textContent = '開陽台を起点として表示中';
+      lbl.style.color = '';
+    }
+  }
+
+  // Geolocation
+  window.locateUser = function() {
+    if (!navigator.geolocation) {
+      alert('このブラウザは位置情報に対応していません。');
+      return;
+    }
+    const btn = document.getElementById('locateBtn');
+    btn.textContent = '📍 取得中…';
+    btn.classList.add('locating');
+
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        originLat = pos.coords.latitude;
+        originLng = pos.coords.longitude;
+        userLocated = true;
+        btn.textContent = '📍 現在地を使用中 ✓';
+        btn.classList.remove('locating');
+        btn.style.color = 'rgba(200,169,110,.85)';
+        btn.style.borderColor = 'rgba(200,169,110,.4)';
+        updateOriginLabel();
+        // Re-trigger current selection with new origin
+        if (activeIdx > 0) {
+          window.selectPoi(activeIdx);
+        } else {
+          swapIframe(placeUrl(originLat, originLng, 13));
+        }
+      },
+      (err) => {
+        btn.textContent = '📍 現在地を使う';
+        btn.classList.remove('locating');
+        const msgs = {1:'位置情報へのアクセスが拒否されました。', 2:'位置情報を取得できませんでした。', 3:'タイムアウトしました。'};
+        alert(msgs[err.code] || '位置情報の取得に失敗しました。');
+      },
+      { timeout: 10000, maximumAge: 60000, enableHighAccuracy: false }
+    );
+  };
+
+  window.selectPoi = function(idx) {
+    activeIdx = idx;
+    const poi = POIS[idx];
+
+    // Highlight list
+    document.querySelectorAll('.poi-item').forEach((el, i) => {
+      el.classList.toggle('active', i === idx);
+    });
+
+    // Swap map
+    if (poi.isOrigin) {
+      swapIframe(placeUrl(originLat, originLng, 13));
+    } else {
+      swapIframe(directionsUrl(originLat, originLng, poi.lat, poi.lng));
+    }
+
+    // Info panel below map
+    const info = document.getElementById('mapRouteInfo');
+    if (poi.isOrigin) {
+      info.classList.remove('visible');
+    } else {
+      const originLabel = userLocated ? '現在地' : '開陽台';
+      document.getElementById('routeInfoDot').style.background = poi.color;
+      document.getElementById('routeInfoName').textContent = poi.label + ' — ' + poi.sub;
+      document.getElementById('routeInfoDetail').textContent = `${originLabel}より車で${poi.time}`;
+      document.getElementById('routeInfoDist').textContent = poi.dist;
+      document.getElementById('routeOpenLink').href = mapsLink(originLat, originLng, poi.lat, poi.lng);
+      info.classList.add('visible');
+    }
+  };
+
+  updateOriginLabel();
+})();
+
+
+// ── SCROLL REVEAL ──
+const revealEls = document.querySelectorAll('.reveal');
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); }
+  });
+}, { threshold: .12 });
+revealEls.forEach(el => revealObs.observe(el));
+
+// ── LIGHTBOX ──
+function openLightboxImg(src) {
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function openLightbox(card) {
+  const img = card.querySelector('.exp-card-bg');
+  if (img) openLightboxImg(img.src.replace('w=800', 'w=1400'));
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeLightbox(); closeVideoModal(); }
+});
+
+// ── VIDEO MODAL ──
+function openVideoModal() {
+  document.getElementById('videoModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeVideoModal() {
+  document.getElementById('videoModal').classList.remove('open');
+  document.getElementById('modalVideo').pause();
+  document.body.style.overflow = '';
+}
+
+// ── PLANNER ──
+const plannerData = { days: null, interest: null };
+
+function selectOption(btn, key, val) {
+  const parent = btn.closest('.planner-options');
+  parent.querySelectorAll('.planner-option').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  plannerData[key] = val;
+}
+
+const plans = {
+  '1日自然':   '🌿 1日プラン: 早朝6:00に開陽台で日の出を観察 → 朝霧の牧草地散策 → 野付半島ネイチャーウォーク → 夕暮れに開陽台で夕日鑑賞。移動手段: レンタカー推奨。',
+  '1日写真':   '📷 1日フォトプラン: 日の出前4:30開陽台着 → ゴールデンアワー撮影 → 摩周湖の霧の風景 → 野付半島のトドワラ撮影 → 夕景で締めくくり。三脚必携。',
+  '1日星空':   '✨ 1日星空プラン: 日中は摩周湖・屈斜路湖観光 → 夕食後21:00に開陽台へ → 日本有数の星空を満喫。満月を避けると◎。',
+  '1日温泉':   '♨️ 1日温泉プラン: 午前中に開陽台展望 → 養老牛温泉で昼食 → 中標津温泉でリラックス → 夕方再び開陽台で夕日。',
+  '2日自然':   '🌿 2日プラン: 1日目は開陽台・野付半島・知床クルーズ。2日目は摩周湖・屈斜路湖・硫黄山。宿泊: 養老牛温泉がおすすめ。',
+  '2日写真':   '📷 2日フォトプラン: 1日目はゴールデンアワーの開陽台・野付半島。2日目は摩周湖の霧・知床の絶景。夜は星空撮影。',
+  '2日星空':   '✨ 2日星空プラン: 1日目に開陽台・摩周湖観光、夜に星空撮影。2日目は屈斜路湖コタン露天風呂で星空入浴体験。',
+  '2日温泉':   '♨️ 2日温泉プラン: 1日目は開陽台後に養老牛温泉 (一軒宿みなみ荘)。2日目は川湯温泉・屈斜路湖温泉を巡るルート。',
+  '3日自然':   '🌿 3日プラン: 1日目=開陽台・野付半島。2日目=知床世界遺産クルーズ・カムイワッカ湯の滝。3日目=摩周湖・阿寒湖。大自然を満喫する充実ルート。',
+  '3日写真':   '📷 3日フォトプラン: 1日目=夜明けの開陽台・霧の野付半島。2日目=知床の断崖・ヒグマ撮影チャンス。3日目=摩周湖ブルー・釧路湿原。',
+  '3日星空':   '✨ 3日星空プラン: 1日目=開陽台の星空。2日目=摩周湖の星景。3日目=屈斜路湖・知床のオーロラ展望 (冬季)。光害ゼロの絶景スポット。',
+  '3日温泉':   '♨️ 3日温泉プラン: 1日目=養老牛温泉。2日目=川湯温泉 (酸性泉)。3日目=阿寒湖温泉 (アイヌコタン見学)。北海道温泉巡り完全版。',
+  '4日以上自然': '🌿 4日+プラン: 1日目=開陽台・野付半島。2日目=知床クルーズ・羅臼。3日目=摩周湖・阿寒湖アイヌ文化。4日目=釧路湿原タンチョウ観察・釧路市街。のんびり大自然の旅。',
+  '4日以上写真': '📷 4日+フォトプラン: 北海道東部の全絶景スポットを制覇。開陽台・野付半島・知床・摩周湖・釧路湿原・霧多布湿原。各地の朝夕ゴールデンアワーを狙う上級者向けプラン。',
+  '4日以上星空': '✨ 4日+星空プラン: 毎夜異なる場所で星空を楽しむ。開陽台→摩周湖→知床→屈斜路湖→霧多布。日本最高レベルの星空を4連夜体験する究極プラン。',
+  '4日以上温泉': '♨️ 4日+温泉プラン: 養老牛→川湯→阿寒→屈斜路→帯広十勝川と道東温泉を全制覇。各温泉の個性 (モール泉・酸性泉・アルカリ泉) を体験する温泉ソムリエコース。',
+};
+
+function generatePlan() {
+  const { days, interest } = plannerData;
+  const res = document.getElementById('planner-result');
+  if (!days || !interest) {
+    res.textContent = '⚠️ 日数と興味カテゴリを選択してください。';
+    res.classList.add('visible');
+    return;
+  }
+  const key = days + interest;
+  res.innerHTML = `<strong style="color:var(--gold);display:block;margin-bottom:10px;">✦ あなたへのおすすめプラン</strong>${plans[key] || '素晴らしい旅をお楽しみください！詳細はお問い合わせください。'}`;
+  res.classList.add('visible');
+  res.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// ── LANGUAGE ──
+const langs = {
+  ja: {
+    heroEyebrow: '北海道・標津町 — Hokkaido, Japan',
+    heroTitle: 'Where the <em>Earth</em> Meets the Sky',
+    heroSub: '地球と空が出会う場所、開陽台へようこそ',
+  },
+  en: {
+    heroEyebrow: 'Hokkaido, Japan — Eastern Frontier',
+    heroTitle: 'Where the <em>Earth</em> Meets the Sky',
+    heroSub: 'Welcome to Kaiyodai, where earth and sky become one.',
+  },
+  zh: {
+    heroEyebrow: '北海道・标津町 — 日本',
+    heroTitle: 'Where the <em>Earth</em> Meets the Sky',
+    heroSub: '欢迎来到开阳台，天地交汇之处。',
+  }
+};
+
+function setLang(l) {
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`[onclick="setLang('${l}')"]`).classList.add('active');
+  const d = langs[l];
+  document.querySelector('.hero-eyebrow').textContent = d.heroEyebrow;
+  document.querySelector('.hero-title').innerHTML = d.heroTitle;
+  document.querySelector('.hero-subtitle').textContent = d.heroSub;
+}
+
+// ── PARALLAX on scroll ──
+window.addEventListener('scroll', () => {
+  const sy = window.scrollY;
+  const heroContent = document.querySelector('.hero-content');
+  if (heroContent && sy < window.innerHeight) {
+    heroContent.style.transform = `translateY(${sy * .3}px)`;
+    heroContent.style.opacity = 1 - sy / (window.innerHeight * .7);
+  }
+});
+</script>
+</body>
+</html>
