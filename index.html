@@ -33,12 +33,12 @@
     cursor: default;
   }
 
-  /* SCROLLBAR */
+
   ::-webkit-scrollbar { width: 3px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
 
-  /* NAV */
+  
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
     display: flex; align-items: center; justify-content: space-between;
@@ -85,7 +85,7 @@
   .lang-btn.active, .lang-btn:hover { color: white; background: rgba(255,255,255,.1); }
   .lang-sep { color: rgba(255,255,255,.25); }
 
-  /* MOBILE NAV TOGGLE */
+  
   .nav-toggle {
     display: none;
     background: none; border: none; cursor: pointer;
@@ -121,7 +121,7 @@
   }
   .mobile-menu-langs .lang-btn { font-size: .8rem; padding: 6px 12px; }
 
-  /* ── HERO ── */
+  
   #hero {
     position: relative; height: 100vh; overflow: hidden;
     display: flex; align-items: center;
@@ -192,7 +192,7 @@
     border-color: white; background: rgba(255,255,255,.1);
   }
 
-  /* scroll indicator */
+
   .scroll-indicator {
     position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
     z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 12px;
@@ -213,7 +213,7 @@
     animation: scrollDown 2s 2s infinite;
   }
 
-  /* weather badge */
+
   .weather-badge {
     position: absolute; bottom: 48px; right: 48px; z-index: 3;
     display: flex; align-items: center; gap: 12px;
@@ -229,7 +229,7 @@
   }
   .weather-desc { font-size: .7rem; color: rgba(255,255,255,.5); }
 
-  /* slide counter */
+  
   .slide-counter {
     position: absolute; left: 48px; top: 50%; transform: translateY(-50%);
     z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 8px;
@@ -250,7 +250,6 @@
     animation: slideProgress 5s linear infinite;
   }
 
-  /* ── ABOUT ── */
   #about {
     background: var(--charcoal);
     padding: 140px 80px;
@@ -317,7 +316,6 @@
     color: rgba(255,255,255,.4); margin-top: 4px; display: block;
   }
 
-  /* ── SEASONS ── */
   #seasons {
     background: var(--dark-green);
     padding: 120px 0;
@@ -377,7 +375,6 @@
     color: rgba(255,255,255,.5); display: block; margin-top: 6px;
   }
 
-  /* ── EXPERIENCES ── */
   #experiences {
     background: var(--charcoal);
     padding: 140px 80px;
@@ -443,7 +440,7 @@
   .exp-card:hover .exp-arrow { opacity: 1; transform: scale(1); }
   .exp-arrow svg { width: 14px; height: 14px; stroke: white; fill: none; }
 
-  /* ── MAP ── */
+  
   #map-section {
     background: #0e1410;
     padding: 120px 80px;
@@ -563,7 +560,7 @@
   .map-locate-btn.locating { color: var(--gold); border-color: var(--gold); animation: pulse-loc .8s infinite; }
   @keyframes pulse-loc { 0%,100%{opacity:1} 50%{opacity:.4} }
 
-  /* ── GALLERY ── */
+ 
   #gallery {
     background: var(--charcoal);
     padding: 120px 80px;
@@ -677,7 +674,6 @@
   }
   #planner-result.visible { display: block; animation: fadeIn .5s forwards; }
 
-  /* ── NEWS ── */
   #news {
     background: var(--charcoal);
     padding: 120px 80px;
@@ -725,7 +721,7 @@
     letter-spacing: .05em;
   }
 
-  /* ── FOOTER ── */
+  
   footer {
     background: #0a0f0b;
     padding: 80px;
@@ -788,7 +784,7 @@
   }
   .lightbox-close:hover { opacity: 1; }
 
-  /* VIDEO MODAL */
+  
   .video-modal {
     position: fixed; inset: 0; z-index: 5000;
     background: rgba(0,0,0,.97); backdrop-filter: blur(20px);
@@ -806,7 +802,7 @@
   }
   .video-modal-close:hover { opacity: 1; }
 
-  /* scroll reveal */
+
   .reveal {
     opacity: 0; transform: translateY(40px);
     transition: opacity .8s cubic-bezier(.25,.46,.45,.94),
@@ -817,7 +813,7 @@
   .reveal-delay-2 { transition-delay: .2s; }
   .reveal-delay-3 { transition-delay: .3s; }
 
-  /* KEYFRAMES */
+
   @keyframes fadeUp {
     to { opacity: 1; transform: translateY(0); }
   }
@@ -841,7 +837,7 @@
     100% { transform: scale(2.2); opacity: 0; }
   }
 
-  /* RESPONSIVE ── tablets & phones (≤900px) */
+
   @media (max-width: 900px) {
     nav { padding: 18px 20px; }
     nav.scrolled { padding: 13px 20px; }
@@ -899,7 +895,6 @@
     .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
   }
 
-  /* RESPONSIVE ── large phones (≤600px) */
   @media (max-width: 600px) {
     nav { padding: 16px 18px; }
     .nav-logo-main { font-size: 1.1rem; letter-spacing: .18em; }
@@ -947,7 +942,6 @@
     .footer-brand p { margin-top: 14px; }
   }
 
-  /* RESPONSIVE ── small phones (≤420px) */
   @media (max-width: 420px) {
     .hero-title { font-size: clamp(2.4rem, 11vw, 3.2rem); }
     .weather-badge { display: none; }
@@ -965,7 +959,6 @@
 </head>
 <body>
 
-<!-- NAV -->
 <nav id="mainNav">
   <a href="#" class="nav-logo">
     <span class="nav-logo-main">KAIYODAI</span>
@@ -1007,7 +1000,7 @@
   </div>
 </div>
 
-<!-- HERO -->
+
 <section id="hero">
   <div class="hero-video-wrap">
     <video autoplay muted loop playsinline poster="https://res.cloudinary.com/dtvkj5tiq/video/upload/v1782362982/0625_1_1_1_zsyczr.mp4">
@@ -1051,7 +1044,7 @@
   </div>
 </section>
 
-<!-- ABOUT -->
+
 <section id="about">
   <div class="about-text reveal">
     <h2>
@@ -1089,7 +1082,7 @@
   </div>
 </section>
 
-<!-- SEASONS -->
+
 <section id="seasons">
   <div class="seasons-header reveal">
     <h2>四季の彩り<br><small style="font-size:.5em;color:rgba(255,255,255,.4);letter-spacing:.2em">FOUR SEASONS</small></h2>
@@ -1143,7 +1136,6 @@
   </div>
 </section>
 
-<!-- EXPERIENCES -->
 <section id="experiences">
   <div class="exp-header reveal">
     <span class="eyebrow">Discover</span>
@@ -1237,7 +1229,7 @@
   </div>
 </section>
 
-<!-- MAP -->
+
 <section id="map-section">
   <div class="map-inner">
     <div class="map-text reveal">
@@ -1323,7 +1315,7 @@
   </div>
 </section>
 
-<!-- GALLERY -->
+
 <section id="gallery">
   <div class="gallery-header reveal">
     <h2>Gallery</h2>
@@ -1372,7 +1364,6 @@
   </div>
 </section>
 
-<!-- AI PLANNER -->
 <section id="planner">
   <div class="planner-inner">
     <span class="eyebrow">AI Travel Guide</span>
@@ -1399,7 +1390,7 @@
   </div>
 </section>
 
-<!-- NEWS -->
+
 <section id="news">
   <div class="news-header reveal">
     <h2>お知らせ &amp; Events</h2>
@@ -1441,7 +1432,6 @@
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <div class="footer-top">
     <div class="footer-brand">
@@ -1489,13 +1479,12 @@
   </div>
 </footer>
 
-<!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
   <button class="lightbox-close">✕</button>
   <img class="lightbox-img" id="lightboxImg" src="" alt="">
 </div>
 
-<!-- VIDEO MODAL -->
+
 <div class="video-modal" id="videoModal">
   <button class="video-modal-close" onclick="closeVideoModal()">✕</button>
   <video id="modalVideo" controls autoplay muted loop>
@@ -1504,12 +1493,12 @@
 </div>
 
 <script>
-// ── NAV ──
+
 window.addEventListener('scroll', () => {
   document.getElementById('mainNav').classList.toggle('scrolled', window.scrollY > 60);
 });
 
-// ── MOBILE MENU ──
+
 function toggleMobileMenu() {
   const menu = document.getElementById('mobileMenu');
   const btn = document.getElementById('navToggle');
@@ -1527,9 +1516,9 @@ window.addEventListener('resize', () => {
 });
 
 
-// ── GOOGLE MAP — interactive route switcher with geolocation ──
+
 (function() {
-  // Destination POIs (real coordinates)
+
   const POIS = [
     {
       label: '開陽台', sub: 'Kaiyodai Observation Deck',
@@ -1557,23 +1546,20 @@ window.addEventListener('resize', () => {
       lat: 44.0771, lng: 145.1311,
     },
   ];
-
-  // Origin defaults to Kaiyodai; updated when user shares location
   let originLat = 43.5641, originLng = 144.9383;
   let userLocated = false;
   let activeIdx = -1;
 
-  // Build a plain "place" embed URL (no API key required) for the origin view
+
   function placeUrl(lat, lng, zoom) {
     return `https://maps.google.com/maps?q=${lat},${lng}&z=${zoom}&output=embed`;
   }
 
-  // Build a driving-directions embed URL (origin → destination), no API key required
+
   function directionsUrl(oLat, oLng, dLat, dLng) {
     return `https://maps.google.com/maps?saddr=${oLat},${oLng}&daddr=${dLat},${dLng}&output=embed`;
   }
 
-  // Google Maps deep-link for the "Open in Maps" button (works on desktop and mobile)
   function mapsLink(oLat, oLng, dLat, dLng) {
     return `https://www.google.com/maps/dir/?api=1&origin=${oLat},${oLng}&destination=${dLat},${dLng}&travelmode=driving`;
   }
@@ -1600,7 +1586,7 @@ window.addEventListener('resize', () => {
     }
   }
 
-  // Geolocation
+
   window.locateUser = function() {
     if (!navigator.geolocation) {
       alert('このブラウザは位置情報に対応していません。');
@@ -1620,7 +1606,7 @@ window.addEventListener('resize', () => {
         btn.style.color = 'rgba(200,169,110,.85)';
         btn.style.borderColor = 'rgba(200,169,110,.4)';
         updateOriginLabel();
-        // Re-trigger current selection with new origin
+   
         if (activeIdx > 0) {
           window.selectPoi(activeIdx);
         } else {
@@ -1641,19 +1627,17 @@ window.addEventListener('resize', () => {
     activeIdx = idx;
     const poi = POIS[idx];
 
-    // Highlight list
     document.querySelectorAll('.poi-item').forEach((el, i) => {
       el.classList.toggle('active', i === idx);
     });
 
-    // Swap map
     if (poi.isOrigin) {
       swapIframe(placeUrl(originLat, originLng, 13));
     } else {
       swapIframe(directionsUrl(originLat, originLng, poi.lat, poi.lng));
     }
 
-    // Info panel below map
+
     const info = document.getElementById('mapRouteInfo');
     if (poi.isOrigin) {
       info.classList.remove('visible');
@@ -1672,7 +1656,6 @@ window.addEventListener('resize', () => {
 })();
 
 
-// ── SCROLL REVEAL ──
 const revealEls = document.querySelectorAll('.reveal');
 const revealObs = new IntersectionObserver(entries => {
   entries.forEach(e => {
@@ -1681,7 +1664,6 @@ const revealObs = new IntersectionObserver(entries => {
 }, { threshold: .12 });
 revealEls.forEach(el => revealObs.observe(el));
 
-// ── LIGHTBOX ──
 function openLightboxImg(src) {
   document.getElementById('lightboxImg').src = src;
   document.getElementById('lightbox').classList.add('open');
@@ -1699,7 +1681,6 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') { closeLightbox(); closeVideoModal(); }
 });
 
-// ── VIDEO MODAL ──
 function openVideoModal() {
   document.getElementById('videoModal').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -1710,7 +1691,7 @@ function closeVideoModal() {
   document.body.style.overflow = '';
 }
 
-// ── PLANNER ──
+
 const plannerData = { days: null, interest: null };
 
 function selectOption(btn, key, val) {
@@ -1753,7 +1734,7 @@ function generatePlan() {
   res.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
-// ── LANGUAGE ──
+
 const langs = {
   ja: {
     heroEyebrow: '北海道・標津町 — Hokkaido, Japan',
@@ -1781,7 +1762,7 @@ function setLang(l) {
   document.querySelector('.hero-subtitle').textContent = d.heroSub;
 }
 
-// ── PARALLAX on scroll ──
+
 window.addEventListener('scroll', () => {
   const sy = window.scrollY;
   const heroContent = document.querySelector('.hero-content');
