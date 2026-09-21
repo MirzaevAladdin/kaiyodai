@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KAIYODAI HORIZON — Where the Earth Meets the Sky</title>
+<title>Higashi Hokkaidō — Where the Earth Meets the Sky</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@200;300;400;500&family=Noto+Serif+JP:wght@200;300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@200;300;400;500&family=Noto+Serif+JP:wght@200;300;400&family=Noto+Sans+SC:wght@300;400;500&family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -57,7 +57,8 @@
   }
   .nav-logo-main {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.3rem; font-weight: 600; letter-spacing: .25em;
+    font-size: 1.3rem; font-weight: 600; letter-spacing: .10em;
+    white-space: nowrap;
   }
   .nav-logo-sub {
     font-size: .6rem; font-weight: 300; letter-spacing: .4em;
@@ -228,6 +229,20 @@
     font-size: 1rem; font-weight: 300; letter-spacing: .05em;
   }
   .weather-desc { font-size: .7rem; color: rgba(255,255,255,.5); }
+  .weather-icon {
+    width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center;
+    font-size: 1.45rem; line-height: 1; transform-origin: center;
+  }
+  .weather-icon.weather-sun { animation: weatherSun 2.4s ease-in-out infinite; }
+  .weather-icon.weather-cloud { animation: weatherFloat 2.8s ease-in-out infinite; }
+  .weather-icon.weather-rain { animation: weatherRain 1.1s ease-in-out infinite; }
+  .weather-icon.weather-snow { animation: weatherSnow 1.8s ease-in-out infinite; }
+  .weather-icon.weather-storm { animation: weatherStorm .8s steps(2,end) infinite; }
+  @keyframes weatherSun { 0%,100%{transform:rotate(-8deg) scale(1)} 50%{transform:rotate(8deg) scale(1.12)} }
+  @keyframes weatherFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+  @keyframes weatherRain { 0%,100%{transform:translateY(0)} 50%{transform:translateY(4px)} }
+  @keyframes weatherSnow { 0%,100%{transform:translateY(0) rotate(0)} 50%{transform:translateY(3px) rotate(8deg)} }
+  @keyframes weatherStorm { 0%,100%{transform:scale(1)} 50%{transform:scale(1.16)} }
 
   
   .slide-counter {
@@ -766,7 +781,7 @@
   }
   .footer-socials a:hover { color: var(--gold); }
 
-  /* ── LIGHTBOX ── */
+
   .lightbox {
     position: fixed; inset: 0; z-index: 5000;
     background: rgba(0,0,0,.95); backdrop-filter: blur(20px);
@@ -955,17 +970,335 @@
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
   }
+
+
+  .hero-content {
+    padding: 0 80px;
+    max-width: 980px;
+    margin-top: 20px;
+  
+    transform: translateY(88px);
+  }
+  .hero-eyebrow {
+    display: block;
+    position: relative;
+    z-index: 1;
+    margin: 0 0 22px 0;
+    color: rgba(255,255,255,.78);
+    font-size: .62rem;
+    line-height: 1.5;
+    letter-spacing: .24em;
+    white-space: nowrap;
+  }
+  .hero-title {
+    position: relative;
+    z-index: 2;
+    margin: 0;
+  }
+  .hero-subtitle {
+    position: relative;
+    z-index: 2;
+  }
+
+  #about {
+    padding: 100px 80px 120px;
+    gap: 70px;
+    min-height: 100vh;
+  }
+  .about-visual {
+    width: min(100%, 540px);
+    justify-self: end;
+  }
+  .about-img-main {
+    aspect-ratio: 4 / 3;
+    max-height: 540px;
+    object-fit: cover;
+  }
+  .about-img-accent {
+    bottom: -28px;
+    left: -28px;
+    width: 46%;
+  }
+
+  @media (max-width: 900px) {
+    .hero-content { padding: 0 28px; transform: translateY(54px); }
+    .hero-eyebrow {
+      white-space: normal;
+      max-width: 90%;
+      letter-spacing: .16em;
+      margin-bottom: 16px;
+    }
+    #about {
+      padding: 90px 28px 100px;
+      grid-template-columns: 1fr;
+      gap: 50px;
+    }
+    .about-visual {
+      width: 100%;
+      justify-self: stretch;
+    }
+    .about-img-main {
+      max-height: 460px;
+    }
+  }
+
 </style>
+
+<style id="multi-page-navigation">
+
+.site-page {
+  display: none !important;
+  min-height: calc(100vh - 80px);
+  opacity: 0;
+  transform: translateY(10px);
+}
+.site-page.is-active {
+  display: block !important;
+  animation: pageFadeIn .42s ease both;
+}
+.site-page[data-page="home"] {
+  min-height: calc(100vh - 80px);
+}
+@keyframes pageFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+body.page-mode {
+  overflow-x: hidden;
+}
+.nav-links a.is-current,
+.mobile-menu a.is-current {
+  opacity: 1;
+}
+.nav-links a.is-current::after {
+  width: 100%;
+}
+
+html { scroll-behavior: auto !important; }
+@media (prefers-reduced-motion: reduce) {
+  .site-page.is-active { animation: none; }
+}
+</style>
+
+
+<style id="universal-mobile-responsive">
+
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body { min-width: 0; }
+img, video, iframe, svg { max-width: 100%; }
+button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
+
+
+.site-page, .site-page * { max-width: 100%; }
+.site-page p, .site-page h1, .site-page h2, .site-page h3,
+.site-page span, .site-page a, .site-page button { overflow-wrap: anywhere; }
+
+@media (max-width: 900px) {
+  nav {
+    padding-top: max(12px, env(safe-area-inset-top));
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+    min-height: 64px;
+  }
+  nav.scrolled {
+    padding-top: max(10px, env(safe-area-inset-top));
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+  .nav-logo { min-width: 0; max-width: 58vw; }
+  .nav-logo-main { font-size: clamp(.95rem, 3.5vw, 1.2rem); letter-spacing: .08em; }
+  .nav-logo-sub { font-size: .52rem; letter-spacing: .28em; }
+  .nav-right { min-width: 0; gap: 4px; }
+  .nav-right > .lang-sep,
+  .nav-right > .lang-btn:not(.active) { display: none; }
+  .nav-right > .lang-btn.active { display: inline-flex; align-items: center; justify-content: center; }
+  .lang-btn { font-size: .68rem; padding: 6px 7px; white-space: nowrap; }
+  .nav-toggle { width: 38px; height: 38px; }
+
+  #hero {
+    height: 100svh;
+    min-height: 560px;
+    max-height: none;
+    align-items: flex-start;
+  }
+  .hero-content {
+    width: 100%;
+    max-width: 760px;
+    padding-left: max(20px, env(safe-area-inset-left));
+    padding-right: max(20px, env(safe-area-inset-right));
+    padding-top: 112px;
+    margin-top: 0;
+    transform: translateY(30px);
+  }
+  .hero-eyebrow {
+    max-width: 100%;
+    white-space: normal;
+    font-size: clamp(.52rem, 1.9vw, .65rem);
+    line-height: 1.7;
+    letter-spacing: .12em;
+    margin-bottom: 14px;
+  }
+  .hero-title {
+    max-width: 100%;
+    font-size: clamp(2.6rem, 10.5vw, 5rem);
+    line-height: .98;
+    letter-spacing: -.02em;
+    white-space: pre-line;
+  }
+  .hero-subtitle {
+    max-width: 34rem;
+    font-size: clamp(.72rem, 2.5vw, .9rem);
+    line-height: 1.8;
+    margin-top: 16px;
+  }
+  .hero-cta-row { margin-top: 28px; gap: 16px; }
+  .play-circle { width: 46px; height: 46px; }
+  .scroll-indicator { bottom: max(18px, env(safe-area-inset-bottom)); }
+  .weather-badge {
+    right: max(12px, env(safe-area-inset-right));
+    bottom: max(58px, calc(env(safe-area-inset-bottom) + 28px));
+    max-width: calc(100vw - 24px);
+  }
+
+  #about, #experiences, #map-section, #gallery, #planner, #news {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+  .about-text, .about-visual, .map-text, .map-right, .planner-inner { min-width: 0; }
+  .about-img-main, .about-img-accent, .exp-card-bg, .news-card-img, .masonry-item img { max-width: 100%; }
+
+  .seasons-track { overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; }
+  .season-card { min-width: 0; }
+  .season-info { white-space: normal; }
+  .season-name, .season-name-en { overflow-wrap: anywhere; }
+
+  .exp-grid, .news-grid { width: 100%; min-width: 0; }
+  .exp-card, .news-card { min-width: 0; }
+  .exp-card-content, .news-card-body { padding: clamp(16px, 4vw, 28px); }
+
+  .map-inner { min-width: 0; }
+  .map-visual { width: 100%; max-width: 100%; }
+  .poi-item { min-width: 0; }
+  .poi-name { min-width: 0; }
+  .poi-dist { white-space: nowrap; flex-shrink: 0; }
+  .map-route-info { min-width: 0; flex-wrap: wrap; }
+  .route-info-left { min-width: 0; }
+  .route-info-text { min-width: 0; }
+  .route-info-name, .route-info-detail { overflow-wrap: anywhere; }
+  .route-open-btn { max-width: 100%; }
+
+  .planner-ui { width: 100%; max-width: 100%; }
+  .planner-options { width: 100%; }
+  .planner-option { max-width: 100%; white-space: normal; }
+  #planner-result { overflow-wrap: anywhere; }
+
+  .gallery-header, .news-header { gap: 18px; flex-wrap: wrap; }
+  .gallery-btn { flex-shrink: 0; }
+
+  footer, .footer-top, .footer-bottom { max-width: 100%; }
+}
+
+@media (max-width: 600px) {
+  nav { min-height: 58px; }
+  .nav-logo { max-width: 62vw; }
+  .nav-logo-main { font-size: clamp(.88rem, 4.4vw, 1.08rem); letter-spacing: .06em; }
+  .nav-logo-sub { font-size: .47rem; letter-spacing: .22em; }
+
+  #hero { min-height: 520px; }
+  .hero-content {
+    padding-top: 92px;
+    padding-left: max(18px, env(safe-area-inset-left));
+    padding-right: max(18px, env(safe-area-inset-right));
+    transform: translateY(24px);
+  }
+  .hero-title {
+    font-size: clamp(2.45rem, 12vw, 4rem);
+    line-height: .97;
+  }
+  .hero-eyebrow { margin-bottom: 12px; }
+  .hero-subtitle { font-size: .76rem; max-width: 95%; }
+  .hero-cta-row { margin-top: 22px; }
+  .play-btn { font-size: .64rem; }
+  .weather-badge { font-size: .72rem; padding: 7px 10px; gap: 8px; }
+  .weather-temp { font-size: 1rem; }
+  .weather-desc { font-size: .55rem; }
+
+  #about { padding: 56px 18px; }
+  #experiences, #map-section, #gallery, #planner, #news { padding-left: 18px; padding-right: 18px; }
+  .seasons-header { padding-left: 18px; padding-right: 18px; }
+  .seasons-track { padding-left: 18px; padding-right: 18px; }
+  .season-card { flex-basis: min(76vw, 280px); height: min(72vh, 360px); }
+
+  .exp-grid { grid-template-columns: 1fr 1fr; }
+  .exp-name { font-size: clamp(1.05rem, 5vw, 1.4rem); }
+  .exp-name-ja { font-size: .65rem; }
+
+  .map-visual { height: min(68vw, 300px); min-height: 230px; }
+  .poi-item { gap: 10px; padding: 12px 12px; }
+  .poi-name { font-size: .76rem; }
+  .poi-name-ja, .poi-dist { font-size: .6rem; }
+
+  .masonry { columns: 2; column-gap: 2px; }
+  .planner-ui { padding: 20px 14px; border-radius: 12px; }
+  .planner-question { font-size: 1.05rem; }
+  .planner-option { padding: 9px 14px; font-size: .68rem; }
+  .planner-submit { padding: 14px 12px; font-size: .7rem; }
+}
+
+@media (max-width: 390px) {
+  .nav-logo { max-width: 56vw; }
+  .nav-logo-main { font-size: .84rem; }
+  .nav-logo-sub { display: none; }
+  .lang-btn { padding-left: 5px; padding-right: 5px; }
+  .nav-toggle { width: 34px; height: 34px; }
+
+  #hero { min-height: 500px; }
+  .hero-content { padding-top: 84px; transform: translateY(18px); }
+  .hero-title { font-size: clamp(2.15rem, 12.4vw, 3.25rem); }
+  .hero-subtitle { font-size: .69rem; line-height: 1.7; }
+  .hero-cta-row { margin-top: 18px; }
+  .play-circle { width: 42px; height: 42px; }
+  .scroll-indicator { display: none; }
+  .weather-badge { right: 10px; bottom: 16px; }
+
+  .exp-grid { grid-template-columns: 1fr; }
+  .exp-card { aspect-ratio: 16 / 10; }
+  .masonry { columns: 1; }
+  .season-card { flex-basis: 78vw; height: 300px; }
+}
+
+/* Landscape phones have very little vertical space. */
+@media (max-width: 900px) and (orientation: landscape) and (max-height: 600px) {
+  nav { padding-top: 8px; padding-bottom: 8px; }
+  #hero { min-height: 100svh; }
+  .hero-content {
+    padding-top: 70px;
+    transform: translateY(8px);
+    max-width: 72vw;
+  }
+  .hero-title { font-size: clamp(2rem, 7vw, 3.6rem); }
+  .hero-eyebrow { margin-bottom: 8px; }
+  .hero-subtitle { margin-top: 8px; font-size: .68rem; }
+  .hero-cta-row { margin-top: 12px; }
+  .scroll-indicator, .weather-badge { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-content { transform: none !important; }
+}
+</style>
+
 </head>
 <body>
 
 <nav id="mainNav">
   <a href="#" class="nav-logo">
-    <span class="nav-logo-main">KAIYODAI</span>
-    <span class="nav-logo-sub">Horizon</span>
+    <span class="nav-logo-main">Higashi Hokkaidō</span>
+    <span class="nav-logo-sub">東北海道</span>
   </a>
   <ul class="nav-links">
-    <li><a href="#about">開陽台について</a></li>
+    <li><a href="#about">東北海道について</a></li>
     <li><a href="#seasons">見どころ</a></li>
     <li><a href="#experiences">体験</a></li>
     <li><a href="#planner">旅の計画</a></li>
@@ -985,7 +1318,7 @@
 </nav>
 
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#about" onclick="closeMobileMenu()">開陽台について</a>
+  <a href="#about" onclick="closeMobileMenu()">東北海道について</a>
   <a href="#seasons" onclick="closeMobileMenu()">見どころ</a>
   <a href="#experiences" onclick="closeMobileMenu()">体験</a>
   <a href="#planner" onclick="closeMobileMenu()">旅の計画</a>
@@ -1001,7 +1334,7 @@
 </div>
 
 
-<section id="hero">
+<section id="hero" class="site-page" data-page="home">
   <div class="hero-video-wrap">
     <video autoplay muted loop playsinline poster="https://res.cloudinary.com/dtvkj5tiq/video/upload/v1782362982/0625_1_1_1_zsyczr.mp4">
       <source src="https://res.cloudinary.com/dtvkj5tiq/video/upload/v1782362982/0625_1_1_1_zsyczr.mp4" type="video/mp4">
@@ -1015,11 +1348,11 @@
   </div>
 
   <div class="hero-content">
-    <p class="hero-eyebrow">北海道・標津町 — Hokkaido, Japan</p>
+    <p class="hero-eyebrow">東北海道 — Eastern Hokkaido, Japan</p>
     <h1 class="hero-title">
       Where the<br><em>Earth</em> Meets<br>the Sky
     </h1>
-    <p class="hero-subtitle">地球と空が出会う場所、開陽台へようこそ</p>
+    <p class="hero-subtitle">地球と空が出会う場所、東北海道へようこそ</p>
     <div class="hero-cta-row">
       <button class="play-btn" onclick="openVideoModal()">
         <div class="play-circle">
@@ -1035,55 +1368,42 @@
     <div class="scroll-line"></div>
   </div>
 
-  <div class="weather-badge">
-    <span class="weather-icon">☀️</span>
+  <div class="weather-badge" id="weatherBadge" title="Eastern Hokkaido live weather">
+    <span class="weather-icon weather-sun" id="weatherIcon" aria-hidden="true">☀</span>
     <div>
-      <div class="weather-temp">15°C</div>
-      <div class="weather-desc">晴れ — Sunny</div>
+      <div class="weather-temp" id="weatherTemp">—°C</div>
+      <div class="weather-desc" id="weatherDesc">Eastern Hokkaido</div>
     </div>
   </div>
 </section>
 
 
-<section id="about">
+<section id="about" class="site-page" data-page="about">
   <div class="about-text reveal">
     <h2>
-      <span class="ja">果てしない水平線が、あなたを待っている。</span>
-      The Endless Horizon of Kaiyodai
+      <span class="ja">日本の東に広がる、果てしない大自然。</span>
+      The Wild Heart of Eastern Hokkaido
     </h2>
-    <p>北海道の東、標津町にある開陽台。330度の大パノラマが広がるこの場所は、訪れる人の心を解き放ち、自然の雄大さを感じさせてくれます。</p>
-    <p>Perched at 270 meters above sea level, Kaiyodai offers one of Japan's most breathtaking 330-degree panoramas. Rolling green hills, morning mist, grazing cattle, and a sky that seems to curve with the earth itself.</p>
+    <p>東北海道は、十勝・釧路・根室・オホーツクへと広がる広大な地域。海岸線、湿原、湖、森、火山、そしてどこまでも続く牧草地など、北海道らしい雄大な風景が一つの旅の中に広がっています。</p>
+    <p>From the wetlands of Kushiro and the volcanic landscapes of Akan-Mashu to the wild coast of Shiretoko, the drift ice of the Okhotsk Sea, the open plains of Tokachi and the pastoral landscapes around Nemuro and Nakashibetsu, Eastern Hokkaido offers nature, wildlife, food and quiet space on a truly expansive scale.</p>
     <a href="#experiences" class="about-link">
-      探索する — Explore
+      東北海道を探す
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </a>
   </div>
   <div class="about-visual reveal reveal-delay-2">
     <img class="about-img-main"
-      src="https://images.unsplash.com/photo-1717735418396-b972808504ff?w=800&auto=format"
-      alt="Kaiyodai panorama">
+      src="https://commons.wikimedia.org/wiki/Special:Redirect/file/140828%20Cape%20Puyuni%20Hokkaido%20Japan02s5.jpg"
+      alt="Cape Puyuni and the Sea of Okhotsk, Shiretoko, Eastern Hokkaido">
+    <div style="font-size:.55rem; line-height:1.4; color:rgba(255,255,255,.38); margin-top:8px; letter-spacing:.02em;">Photo: 663highland / Wikimedia Commons</div>
     <img class="about-img-accent"
       src="https://images.unsplash.com/photo-1688054004870-b6057c0020b2?w=600&auto=format"
-      alt="Grazing cattle in morning mist">
-    <div class="about-stats">
-      <div class="stat">
-        <span class="stat-num">330°</span>
-        <span class="stat-label">Panorama</span>
-      </div>
-      <div class="stat">
-        <span class="stat-num">270m</span>
-        <span class="stat-label">Elevation</span>
-      </div>
-      <div class="stat">
-        <span class="stat-num">4</span>
-        <span class="stat-label">Seasons</span>
-      </div>
-    </div>
+      alt="Eastern Hokkaido pastoral landscape">
   </div>
 </section>
 
 
-<section id="seasons">
+<section id="seasons" class="site-page" data-page="seasons">
   <div class="seasons-header reveal">
     <h2>四季の彩り<br><small style="font-size:.5em;color:rgba(255,255,255,.4);letter-spacing:.2em">FOUR SEASONS</small></h2>
     <p>春の新緑、夏の深い緑、秋の紅葉、冬の白銀。<br>開陽台は、四季を通して美しい表情を見せてくれます。</p>
@@ -1136,7 +1456,7 @@
   </div>
 </section>
 
-<section id="experiences">
+<section id="experiences" class="site-page" data-page="experiences">
   <div class="exp-header reveal">
     <span class="eyebrow">Discover</span>
     <h2>Unforgettable<br><em style="font-style:italic;color:rgba(245,244,240,.6)">Experiences</em></h2>
@@ -1230,7 +1550,7 @@
 </section>
 
 
-<section id="map-section">
+<section id="map-section" class="site-page" data-page="map-section">
   <div class="map-inner">
     <div class="map-text reveal">
       <p style="font-size:.85rem; line-height:1.85; color:rgba(255,255,255,.45); font-weight:300; margin-bottom:40px;">開陽台を中心に、北海道東部の絶景スポットをご紹介します。雄大な自然と感動の景色があなたを待っています。</p>
@@ -1316,7 +1636,7 @@
 </section>
 
 
-<section id="gallery">
+<section id="gallery" class="site-page" data-page="experiences">
   <div class="gallery-header reveal">
     <h2>Gallery</h2>
     <button class="gallery-btn" onclick="document.querySelectorAll('.masonry-item').forEach(function(el){el.style.display='';})">
@@ -1364,7 +1684,7 @@
   </div>
 </section>
 
-<section id="planner">
+<section id="planner" class="site-page" data-page="planner">
   <div class="planner-inner">
     <span class="eyebrow">AI Travel Guide</span>
     <h2>Plan Your<br>Perfect Journey</h2>
@@ -1391,7 +1711,7 @@
 </section>
 
 
-<section id="news">
+<section id="news" class="site-page" data-page="news">
   <div class="news-header reveal">
     <h2>お知らせ &amp; Events</h2>
     <a href="#news" style="color:var(--gold);text-decoration:none;font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;">
@@ -1435,14 +1755,14 @@
 <footer>
   <div class="footer-top">
     <div class="footer-brand">
-      <span class="logo-text">KAIYODAI</span>
-      <span class="logo-sub">HORIZON</span>
+      <span class="logo-text">Higashi Hokkaidō</span>
+      <span class="logo-sub">東北海道</span>
       <p>北海道・標津町の開陽台。<br>Where the Earth Meets the Sky.<br>大地と空が出会う、感動の絶景地。</p>
     </div>
     <div class="footer-col">
       <h4>Explore</h4>
       <ul>
-        <li><a href="#about">開陽台について</a></li>
+        <li><a href="#about">東北海道について</a></li>
         <li><a href="#seasons">四季の彩り</a></li>
         <li><a href="#experiences">体験</a></li>
         <li><a href="#gallery">ギャラリー</a></li>
@@ -1468,7 +1788,7 @@
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2027 Kaiyodai Horizon. All rights reserved. 標津町観光協会</span>
+    <span>© 2027 Higashi Hokkaidō. All rights reserved. 標津町観光協会</span>
     <div class="footer-socials">
       <a href="#" target="_blank" rel="noopener">Instagram</a>
       <a href="#" target="_blank" rel="noopener">Twitter / X</a>
@@ -1720,57 +2040,275 @@ const plans = {
   '4日以上温泉': '♨️ 4日+温泉プラン: 養老牛→川湯→阿寒→屈斜路→帯広十勝川と道東温泉を全制覇。各温泉の個性 (モール泉・酸性泉・アルカリ泉) を体験する温泉ソムリエコース。',
 };
 
+
+const planTranslations = {
+  en: {
+    '1日自然':'🌿 1-Day Nature Plan: Watch sunrise at Kaiyodai at 6:00 → walk through misty pastures → nature walk on Notsuke Peninsula → return to Kaiyodai for sunset. Rental car recommended.',
+    '1日写真':'📷 1-Day Photo Plan: Arrive at Kaiyodai at 4:30 before sunrise → shoot the golden hour → capture the mist around Lake Mashu → photograph Todowara on Notsuke Peninsula → finish with sunset views. Tripod recommended.',
+    '1日星空':'✨ 1-Day Stargazing Plan: Explore Lake Mashu and Lake Kussharo during the day → head to Kaiyodai at 21:00 after dinner → enjoy one of Japan’s renowned starry skies. Avoid a full moon for darker skies.',
+    '1日温泉':'♨️ 1-Day Onsen Plan: Visit Kaiyodai in the morning → lunch at Yoroushi Onsen → relax at Nakashibetsu Onsen → return to Kaiyodai for sunset.',
+    '2日自然':'🌿 2-Day Nature Plan: Day 1 — Kaiyodai, Notsuke Peninsula and a Shiretoko cruise. Day 2 — Lake Mashu, Lake Kussharo and Mount Iō. Stay at Yoroushi Onsen.',
+    '2日写真':'📷 2-Day Photo Plan: Day 1 — Kaiyodai and Notsuke Peninsula during golden hour. Day 2 — misty Lake Mashu and spectacular Shiretoko scenery, followed by night-sky photography.',
+    '2日星空':'✨ 2-Day Stargazing Plan: Day 1 — Kaiyodai and Lake Mashu, with night-sky photography. Day 2 — enjoy a starry outdoor bath at Lake Kussharo Kotan.',
+    '2日温泉':'♨️ 2-Day Onsen Plan: Day 1 — Kaiyodai followed by Yoroushi Onsen and Minamiso. Day 2 — explore Kawayu Onsen and the hot springs around Lake Kussharo.',
+    '3日自然':'🌿 3-Day Nature Plan: Day 1 — Kaiyodai and Notsuke Peninsula. Day 2 — Shiretoko World Heritage cruise and Kamuiwakka Falls. Day 3 — Lake Mashu and Lake Akan. A full nature experience.',
+    '3日写真':'📷 3-Day Photo Plan: Day 1 — sunrise at Kaiyodai and misty Notsuke Peninsula. Day 2 — Shiretoko cliffs and wildlife photography opportunities. Day 3 — the blue waters of Lake Mashu and Kushiro Wetland.',
+    '3日星空':'✨ 3-Day Stargazing Plan: Day 1 — Kaiyodai stars. Day 2 — night-sky views at Lake Mashu. Day 3 — Lake Kussharo and Shiretoko aurora viewing in winter. Low-light-pollution locations.',
+    '3日温泉':'♨️ 3-Day Onsen Plan: Day 1 — Yoroushi Onsen. Day 2 — Kawayu Onsen and its acidic spring waters. Day 3 — Lake Akan Onsen and Ainu Kotan. A complete eastern Hokkaido hot-spring journey.',
+    '4日以上自然':'🌿 4+ Day Nature Plan: Day 1 — Kaiyodai and Notsuke Peninsula. Day 2 — Shiretoko cruise and Rausu. Day 3 — Lake Mashu and Ainu culture around Lake Akan. Day 4 — red-crowned cranes in Kushiro Wetland and Kushiro city. A relaxed nature journey.',
+    '4日以上写真':'📷 4+ Day Photo Plan: Explore eastern Hokkaido’s major scenic locations — Kaiyodai, Notsuke Peninsula, Shiretoko, Lake Mashu, Kushiro Wetland and Kiritappu Wetland. Target golden hour at sunrise and sunset.',
+    '4日以上星空':'✨ 4+ Day Stargazing Plan: Enjoy a different starry-sky location every night — Kaiyodai → Lake Mashu → Shiretoko → Lake Kussharo → Kiritappu. Four consecutive nights of exceptional stargazing.',
+    '4日以上温泉':'♨️ 4+ Day Onsen Plan: Yoroushi → Kawayu → Akan → Kussharo → Tokachigawa in Obihiro. Experience the distinctive character of eastern Hokkaido hot springs, including moor, acidic and alkaline waters.'
+  },
+  zh: {
+    '1日自然':'🌿 1日自然之旅：早上6:00在开阳台观赏日出 → 漫步晨雾牧场 → 前往野付半岛自然步道 → 傍晚返回开阳台欣赏夕阳。建议自驾。',
+    '1日写真':'📷 1日摄影之旅：日出前4:30抵达开阳台 → 拍摄黄金时刻 → 捕捉摩周湖晨雾 → 前往野付半岛拍摄野付原野景观 → 以夕景结束旅程。建议携带三脚架。',
+    '1日星空':'✨ 1日观星之旅：白天游览摩周湖与屈斜路湖 → 晚餐后21:00前往开阳台 → 欣赏日本著名的星空。避开满月可获得更好的观星效果。',
+    '1日温泉':'♨️ 1日温泉之旅：上午游览开阳台 → 在养老牛温泉享用午餐 → 在中标津温泉放松 → 傍晚再次前往开阳台欣赏夕阳。',
+    '2日自然':'🌿 2日自然之旅：第1天 — 开阳台、野付半岛、知床巡游。第2天 — 摩周湖、屈斜路湖、硫黄山。住宿可选择养老牛温泉。',
+    '2日写真':'📷 2日摄影之旅：第1天 — 黄金时刻拍摄开阳台与野付半岛。第2天 — 摩周湖晨雾与知床壮丽景色，夜晚进行星空摄影。',
+    '2日星空':'✨ 2日观星之旅：第1天 — 游览开阳台与摩周湖，夜晚拍摄星空。第2天 — 在屈斜路湖古丹露天温泉体验星空泡汤。',
+    '2日温泉':'♨️ 2日温泉之旅：第1天 — 游览开阳台后前往养老牛温泉（南庄）。第2天 — 探访川汤温泉与屈斜路湖温泉。',
+    '3日自然':'🌿 3日自然之旅：第1天 — 开阳台、野付半岛。第2天 — 知床世界自然遗产巡游、神威若卡温泉瀑布。第3天 — 摩周湖、阿寒湖。尽情感受东北海道的大自然。',
+    '3日写真':'📷 3日摄影之旅：第1天 — 开阳台日出与野付半岛晨雾。第2天 — 知床断崖与野生棕熊摄影机会。第3天 — 摩周湖蓝色湖景与钏路湿原。',
+    '3日星空':'✨ 3日观星之旅：第1天 — 开阳台星空。第2天 — 摩周湖星景。第3天 — 屈斜路湖与知床冬季极光观赏。选择低光污染的绝佳观星地点。',
+    '3日温泉':'♨️ 3日温泉之旅：第1天 — 养老牛温泉。第2天 — 川汤温泉（酸性温泉）。第3天 — 阿寒湖温泉与阿伊努村落。完整体验北海道东部温泉之旅。',
+    '4日以上自然':'🌿 4日以上自然之旅：第1天 — 开阳台、野付半岛。第2天 — 知床巡游、罗臼。第3天 — 摩周湖、阿寒湖阿伊努文化。第4天 — 钏路湿原丹顶鹤观赏与钏路市区。悠闲探索东北海道自然风光。',
+    '4日以上写真':'📷 4日以上摄影之旅：探索北海道东部主要绝景 — 开阳台、野付半岛、知床、摩周湖、钏路湿原、雾多布湿原。把握各地日出与日落的黄金时刻。',
+    '4日以上星空':'✨ 4日以上观星之旅：每晚前往不同地点欣赏星空 — 开阳台 → 摩周湖 → 知床 → 屈斜路湖 → 雾多布。连续四晚体验极佳星空。',
+    '4日以上温泉':'♨️ 4日以上温泉之旅：养老牛 → 川汤 → 阿寒 → 屈斜路 → 带广十胜川。体验东北海道不同温泉的特色，包括腐植质温泉、酸性泉与碱性泉。'
+  }
+};
+
 function generatePlan() {
   const { days, interest } = plannerData;
   const res = document.getElementById('planner-result');
   if (!days || !interest) {
-    res.textContent = '⚠️ 日数と興味カテゴリを選択してください。';
+    res.textContent = currentLang==='en' ? '⚠️ Please select the trip length and your interests.' : currentLang==='zh' ? '⚠️ 请选择旅行天数和兴趣。' : '⚠️ 日数と興味カテゴリを選択してください。';
     res.classList.add('visible');
     return;
   }
   const key = days + interest;
-  res.innerHTML = `<strong style="color:var(--gold);display:block;margin-bottom:10px;">✦ あなたへのおすすめプラン</strong>${plans[key] || '素晴らしい旅をお楽しみください！詳細はお問い合わせください。'}`;
+  const planText = currentLang === 'ja' ? plans[key] : (planTranslations[currentLang] && planTranslations[currentLang][key]);
+  const fallback = currentLang==='en' ? 'Enjoy your journey! Contact us for more details.' : currentLang==='zh' ? '祝你旅途愉快！如需更多信息，请联系我们。' : '素晴らしい旅をお楽しみください！詳細はお問い合わせください。';
+  res.innerHTML = `<strong style="color:var(--gold);display:block;margin-bottom:10px;">✦ ${currentLang==='en'?'Recommended for You':currentLang==='zh'?'为你推荐的行程':'あなたへのおすすめプラン'}</strong>${planText || fallback}`;
   res.classList.add('visible');
   res.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 
-const langs = {
+const translations = {
   ja: {
-    heroEyebrow: '北海道・標津町 — Hokkaido, Japan',
-    heroTitle: 'Where the <em>Earth</em> Meets the Sky',
-    heroSub: '地球と空が出会う場所、開陽台へようこそ',
+    logoMain:'Higashi Hokkaidō', nav: ['開陽台について','見どころ','体験','旅の計画','アクセス','お知らせ'],
+    mobile: ['開陽台について','見どころ','体験','旅の計画','アクセス','お知らせ'],
+    eyebrow:'東北海道 — 日本', title:'大地と空が\n出会う場所', sub:'大地と空が出会う、東北海道へようこそ。', play:'映像を見る', scroll:'スクロール',
+    aboutTitle:'日本の東に広がる、果てしない大自然。', aboutEn:'東北海道 — 自然が息づく大地',
+    aboutP1:'東北海道は、十勝・釧路・根室・オホーツクへと広がる広大な地域。海岸線、湿原、湖、森、火山、そしてどこまでも続く牧草地など、北海道らしい雄大な風景が一つの旅の中に広がっています。',
+    aboutP2:'釧路湿原や阿寒摩周の火山景観、知床の原生的な海岸、オホーツク海の流氷、十勝平野、根室・中標津の牧草地まで。自然、野生動物、食、そして静かな時間を、広大なスケールで楽しめます。', explore:'東北海道を探す',
+    stats:['国立公園','四季','風景'], seasonsTitle:'四季の彩り', seasonsDesc:'春の新緑、夏の深い緑、秋の紅葉、冬の白銀。東北海道は、四季を通して美しい表情を見せてくれます。',
+    season:['春','夏','秋','冬'], seasonEn:['春','夏','秋','冬'], months:['4月 — 5月','6月 — 8月','9月 — 10月','11月 — 3月'],
+    discover:'発見', expTitle:'忘れられない<br><em style="font-style:italic;color:rgba(245,244,240,.6)">体験</em>', expNames:['絶景','自然散策','星空観察','野生動物','サイクリング','写真撮影'],
+    mapDesc:'開陽台を中心に、東北海道の絶景スポットをご紹介します。雄大な自然と感動の景色があなたを待っています。', mapLoc:'開陽台を起点として表示中', locate:'現在地を使う', openMaps:'地図で開く →', start:'起点', route:'ルート表示', departure:'出発地',
+    gallery:'ギャラリー', viewAll:'すべて見る', captions:['330度の大パノラマ','緑の丘','満天の星空','秋の色彩','冬の白銀','朝霧の牧場','朝霧の大地','牧場の牛たち','ミルクロード'],
+    plannerEyebrow:'AI旅行ガイド', plannerTitle:'理想の旅を<br>計画する', plannerDesc:'あなたの旅をAIがサポート。ご希望に合わせた最適なルートをご提案します。', daysQ:'旅行は何日間ですか？', days:['1日','2日','3日','4日以上'], interestQ:'お好みは？', interests:['自然','写真','星空','温泉'], makePlan:'プランを作成',
+    news:'お知らせ・イベント', eventTags:['イベント','体験','お知らせ'], newsTitles:['春の開陽台フォトコンテスト2025開催','夏の星空観察ナイトツアー予約開始','レンタサイクルサービス営業時間延長のお知らせ'],
+    footerDesc:'東北海道・標津町の開陽台。<br>大地と空が出会う、感動の絶景地。', footerCols:['探索','訪問','情報'], footerLinks:[['開陽台について','四季の彩り','体験','ギャラリー'],['アクセス','旅の計画','宿泊情報','レストラン'],['お知らせ','よくある質問','お問い合わせ','公式サイト']],
+    footerCopyright:'© 2027 Higashi Hokkaidō. All rights reserved. 標津町観光協会', footerLocation:'北海道 标津郡 标津町', weatherTitle:'北海道东部实时天气', weather:'東北海道', sunny:'晴れ', cloudy:'くもり', rainy:'雨', snowy:'雪', storm:'雷雨', weatherError:'天気情報を取得できませんでした'
   },
   en: {
-    heroEyebrow: 'Hokkaido, Japan — Eastern Frontier',
-    heroTitle: 'Where the <em>Earth</em> Meets the Sky',
-    heroSub: 'Welcome to Kaiyodai, where earth and sky become one.',
+    logoMain:'Higashi Hokkaidō', nav:['About','Highlights','Experiences','Plan Your Trip','Access','News'], mobile:['About','Highlights','Experiences','Plan Your Trip','Access','News'],
+    eyebrow:'Eastern Hokkaido — Japan', title:'Where the\nEarth Meets\nthe Sky', sub:'Welcome to Eastern Hokkaido, where earth and sky become one.', play:'Play Film', scroll:'Scroll',
+    aboutTitle:'A vast region at the eastern edge of Japan.', aboutEn:'The Wild Heart of Eastern Hokkaido',
+    aboutP1:'Eastern Hokkaido stretches across Tokachi, Kushiro, Nemuro and Okhotsk, bringing together coastlines, wetlands, lakes, forests, volcanic landscapes and open pastureland on an extraordinary scale.',
+    aboutP2:'From Kushiro Wetland and Akan-Mashu to the wild coast of Shiretoko, the drift ice of the Okhotsk Sea, the plains of Tokachi and the pastoral landscapes around Nemuro and Nakashibetsu, the region offers nature, wildlife, food and quiet space.', explore:'Explore Eastern Hokkaido', stats:['National Parks','Seasons','Landscapes'],
+    seasonsTitle:'The Four Seasons', seasonsDesc:'Fresh green in spring, deep green in summer, autumn color and winter snow. Eastern Hokkaido reveals a different character throughout the year.', season:['Spring','Summer','Autumn','Winter'], seasonEn:['SPRING','SUMMER','AUTUMN','WINTER'], months:['April — May','June — August','September — October','November — March'],
+    discover:'Discover', expTitle:'Unforgettable<br><em style="font-style:italic;color:rgba(245,244,240,.6)">Experiences</em>', expNames:['Scenic View','Nature Walk','Stargazing','Wildlife','Cycling','Photography'],
+    mapDesc:'Discover scenic places across Eastern Hokkaido from Kaiyodai. Vast nature and unforgettable landscapes are waiting for you.', mapLoc:'Showing routes from Kaiyodai', locate:'Use My Location', openMaps:'Open Map →', start:'Start', route:'Show Route', departure:'Departure',
+    gallery:'Gallery', viewAll:'View All', captions:['330° Panorama','Green Hills','Starry Sky','Autumn Colors','Winter Snow','Morning Mist Pasture','Misty Landscape','Grazing Cattle','Milk Road'],
+    plannerEyebrow:'AI Travel Guide', plannerTitle:'Plan Your<br>Perfect Journey', plannerDesc:'Let our AI help shape a route around the way you want to travel.', daysQ:'How many days?', days:['1 Day','2 Days','3 Days','4+ Days'], interestQ:'What interests you?', interests:['Nature','Photography','Stargazing','Onsen'], makePlan:'Generate My Plan',
+    news:'News & Events', eventTags:['Event','Experience','Notice'], newsTitles:['Kaiyodai Spring Photo Contest 2025','Summer Stargazing Night Tour Reservations Open','Extended Rental Bicycle Service Hours'],
+    footerDesc:'Kaiyodai in Shibetsu, Eastern Hokkaido.<br>Where earth and sky meet.', footerCols:['Explore','Visit','Info'], footerLinks:[['About','Four Seasons','Experiences','Gallery'],['Access','Plan Your Trip','Accommodation','Restaurants'],['News','FAQ','Contact','Official Site']],
+    footerCopyright:'© 2027 Higashi Hokkaidō. All rights reserved. Shibetsu Tourism Association', footerLocation:'Shibetsu, Shibetsu District, Hokkaido, Japan', weatherTitle:'Eastern Hokkaido live weather', weather:'Eastern Hokkaido', sunny:'Clear', cloudy:'Cloudy', rainy:'Rain', snowy:'Snow', storm:'Thunderstorm', weatherError:'Weather data unavailable'
   },
   zh: {
-    heroEyebrow: '北海道・标津町 — 日本',
-    heroTitle: 'Where the <em>Earth</em> Meets the Sky',
-    heroSub: '欢迎来到开阳台，天地交汇之处。',
+    logoMain:'北海道东部', nav:['关于开阳台','亮点','体验','旅行计划','交通','资讯'], mobile:['关于开阳台','亮点','体验','旅行计划','交通','资讯'],
+    eyebrow:'北海道东部 — 日本', title:'大地与天空\n相遇之地', sub:'欢迎来到北海道东部，这里是大地与天空交汇的地方。', play:'播放影片', scroll:'向下滚动',
+    aboutTitle:'无尽的地平线正在等待你的到来。', aboutEn:'北海道东部的无尽地平线',
+    aboutP1:'北海道东部拥有辽阔的大自然。从开阳台330度的全景到宁静的海岸平原，每一处景色都让人放慢脚步，眺望更远的地方。',
+    aboutP2:'站在海拔270米的高处，绿色丘陵、晨雾、牧场与仿佛和大地相连的天空尽收眼底。', explore:'探索', stats:['全景','海拔','四季'],
+    seasonsTitle:'四季之美', seasonsDesc:'春天的新绿、夏日的深绿、秋天的色彩与冬季的白雪。北海道东部一年四季都展现不同的魅力。', season:['春','夏','秋','冬'], seasonEn:['春季','夏季','秋季','冬季'], months:['4月 — 5月','6月 — 8月','9月 — 10月','11月 — 3月'],
+    discover:'发现', expTitle:'难忘的<br><em style="font-style:italic;color:rgba(245,244,240,.6)">体验</em>', expNames:['绝景','自然漫步','观星','野生动物','骑行','摄影'],
+    mapDesc:'以开阳台为中心，探索北海道东部的绝美景点。壮丽的自然与令人感动的风景正在等待你。', mapLoc:'显示从开阳台出发的路线', locate:'使用我的位置', openMaps:'打开地图 →', start:'起点', route:'显示路线', departure:'出发地',
+    gallery:'画廊', viewAll:'查看全部', captions:['330度全景','绿色丘陵','满天星空','秋日色彩','冬季白雪','晨雾牧场','晨雾大地','牧场牛群','牛奶之路'],
+    plannerEyebrow:'AI旅行指南', plannerTitle:'规划你的<br>完美旅程', plannerDesc:'让AI根据你的旅行方式，为你规划专属路线。', daysQ:'旅行几天？', days:['1天','2天','3天','4天以上'], interestQ:'你喜欢什么？', interests:['自然','摄影','观星','温泉'], makePlan:'生成我的计划',
+    news:'资讯与活动', eventTags:['活动','体验','通知'], newsTitles:['开阳台春季摄影大赛2025开始报名','夏季星空观赏夜游开始预约','租赁自行车服务时间延长'],
+    footerDesc:'北海道东部标津町的开阳台。<br>大地与天空相遇的壮丽之地。', footerCols:['探索','访问','信息'], footerLinks:[['关于开阳台','四季之美','体验','画廊'],['交通','旅行计划','住宿','餐厅'],['资讯','常见问题','联系我们','官方网站']],
+    footerCopyright:'© 2027 Higashi Hokkaidō. All rights reserved. 标津町观光协会', footerLocation:'北海道标津郡标津町', weatherTitle:'北海道东部实时天气', weather:'北海道东部', sunny:'晴', cloudy:'多云', rainy:'雨', snowy:'雪', storm:'雷雨', weatherError:'无法获取天气数据'
   }
 };
 
+function setText(sel, value, html=false){ const el=document.querySelector(sel); if(el) html ? el.innerHTML=value : el.textContent=value; }
+function setAllText(sel, values){ document.querySelectorAll(sel).forEach((el,i)=>{ if(values[i]!==undefined) el.textContent=values[i]; }); }
 function setLang(l) {
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll(`[onclick="setLang('${l}')"]`).forEach(b => b.classList.add('active'));
-  const d = langs[l];
-  document.querySelector('.hero-eyebrow').textContent = d.heroEyebrow;
-  document.querySelector('.hero-title').innerHTML = d.heroTitle;
-  document.querySelector('.hero-subtitle').textContent = d.heroSub;
+  const d=translations[l]; 
+  document.documentElement.lang=l==='zh'?'zh':l;
+  document.documentElement.classList.toggle('lang-zh', l==='zh');
+
+  const logoSub = l==='ja' ? '東北海道' : (l==='en' ? 'Eastern Hokkaido' : '北海道东部');
+  setText('.nav-logo-main', d.logoMain);
+  setText('.footer .logo-text', d.logoMain);
+  setText('.nav-logo-sub', logoSub);
+  setText('.footer-logo-sub', logoSub);
+  setText('.footer-brand .logo-sub', logoSub);
+  const weatherBadge=document.getElementById('weatherBadge');
+  if(weatherBadge) weatherBadge.title=d.weatherTitle;
+  setAllText('.nav-links a',d.nav); setAllText('.mobile-menu > a',d.mobile);
+  setText('.hero-eyebrow',d.eyebrow); setText('.hero-title',d.title); setText('.hero-subtitle',d.sub); setText('.play-btn span',d.play); setText('.scroll-text',d.scroll);
+  setText('.about-text h2 .ja',d.aboutTitle); setText('.about-text h2',d.aboutEn, false); const h2=document.querySelector('.about-text h2'); if(h2){h2.innerHTML=`<span class="ja">${d.aboutTitle}</span>${d.aboutEn}`;}
+  setAllText('.about-text p',[d.aboutP1,d.aboutP2]); setText('.about-link',d.explore); if(document.querySelector('.about-link')) document.querySelector('.about-link').innerHTML=d.explore+' <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+  setText('.seasons-header h2',d.seasonsTitle);
+  setText('.seasons-header p',d.seasonsDesc);
+  setAllText('.season-label',d.months);
+  setAllText('.season-name',d.season);
+  document.querySelectorAll('.season-name-en').forEach(el => el.style.display='none');
+
+  setAllText('.stat-label',d.stats);
+  setText('.exp-header .eyebrow',d.discover); setText('.exp-header h2',d.expTitle,true); 
+  setAllText('.exp-name',d.expNames);
+  document.querySelectorAll('.exp-name-ja').forEach((el,i)=>{ el.textContent = l==='ja' ? d.expNames[i] : ''; el.style.display = l==='ja' ? '' : 'none'; });
+  setText('#map-section .map-text > p',d.mapDesc); setText('#locationLabel',d.mapLoc); setText('#locateBtn', '📍 '+d.locate); setText('#routeOpenLink',d.openMaps);
+  const poiNames={ja:['開陽台','摩周湖','野付半島','養老牛温泉','知床'],en:['Kaiyodai','Lake Mashu','Notsuke Peninsula','Yoroushi Onsen','Shiretoko'],zh:['开阳台','摩周湖','野付半岛','养老牛温泉','知床']}; const poiSub={ja:['開陽台展望台','摩周湖','野付半島','養老牛温泉','知床世界自然遺産'],en:['Kaiyodai Observation Deck','Lake Mashu','Notsuke Peninsula','Yoroushi Onsen','Shiretoko World Heritage'],zh:['开阳台观景台','摩周湖','野付半岛','养老牛温泉','知床世界自然遗产']}; setAllText('.poi-name',poiNames[l]); setAllText('.poi-name-ja',poiSub[l]); setAllText('.route-badge',[d.departure,d.route,d.route,d.route,d.route]);
+  setText('.gallery-header h2',d.gallery); setText('.gallery-btn',d.viewAll); if(document.querySelector('.gallery-btn')) document.querySelector('.gallery-btn').innerHTML=d.viewAll+' <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7-7"/></svg>'; setAllText('.masonry-caption',d.captions);
+  setText('.planner-inner .eyebrow',d.plannerEyebrow); setText('.planner-inner h2',d.plannerTitle,true); setText('.planner-inner > p',d.plannerDesc); setAllText('.planner-question',[d.daysQ,d.interestQ]); setAllText('#dayOptions .planner-option',d.days); setAllText('#interestOptions .planner-option',d.interests.map((x,i)=>['🌿 ','📷 ','✨ ','♨️ '][i]+x)); setText('.planner-submit', '✦ '+d.makePlan);
+  setText('.news-header h2',d.news); setText('.news-header > a',d.viewAll+' →'); setAllText('.news-tag',d.eventTags); setAllText('.news-title',d.newsTitles);
+  setAllText('.footer-col h4',d.footerCols); 
+  const fl=document.querySelectorAll('.footer-col ul'); 
+  fl.forEach((ul,i)=>ul.querySelectorAll('a').forEach((a,j)=>{ if(d.footerLinks[i] && d.footerLinks[i][j]!==undefined) a.textContent=d.footerLinks[i][j]; }));
+  setText('.footer-brand p',d.footerDesc,true);
+  const fb=document.querySelectorAll('.footer-bottom > span');
+  if(fb[0]) fb[0].textContent=d.footerCopyright;
+  if(fb[1]) fb[1].textContent=d.footerLocation;
+  updateWeatherLabel();
 }
 
+const weatherCodes={0:'sunny',1:'sunny',2:'cloudy',3:'cloudy',45:'cloudy',48:'cloudy',51:'rainy',53:'rainy',55:'rainy',56:'rainy',57:'rainy',61:'rainy',63:'rainy',65:'rainy',66:'rainy',67:'rainy',71:'snowy',73:'snowy',75:'snowy',77:'snowy',80:'rainy',81:'rainy',82:'rainy',85:'snowy',86:'snowy',95:'storm',96:'storm',99:'storm'};
+let currentLang='ja';
+const originalSetLang=setLang;
+setLang=function(l){ currentLang=l; originalSetLang(l); };
+function updateWeatherLabel(){
+  const d=translations[currentLang]||translations.ja; const desc=document.getElementById('weatherDesc');
+  if(desc && !desc.dataset.live) desc.textContent=d.weather;
+}
+async function loadWeather(){
+  const temp=document.getElementById('weatherTemp'), desc=document.getElementById('weatherDesc'), icon=document.getElementById('weatherIcon'); if(!temp||!desc||!icon)return;
+  try{
+    const url='https://api.open-meteo.com/v1/forecast?latitude=43.5641&longitude=144.9383&current=temperature_2m,weather_code,wind_speed_10m,is_day&temperature_unit=celsius&wind_speed_unit=kmh&timezone=Asia%2FTokyo';
+    const r=await fetch(url,{cache:'no-store'}); if(!r.ok) throw new Error('weather'); const j=await r.json(); const c=j.current; const d=translations[currentLang]||translations.ja;
+    const kind=weatherCodes[c.weather_code]||'cloudy'; const labels={sunny:d.sunny,cloudy:d.cloudy,rainy:d.rainy,snowy:d.snowy,storm:d.storm}; const chars={sunny:'☀',cloudy:'☁',rainy:'☂',snowy:'❄',storm:'⚡'};
+    temp.textContent=`${Math.round(c.temperature_2m)}°C`; desc.textContent=`${labels[kind]} · ${d.weather} · ${Math.round(c.wind_speed_10m)} km/h`; desc.dataset.live='1'; icon.textContent=chars[kind]; icon.className='weather-icon weather-'+kind;
+  }catch(e){ const d=translations[currentLang]||translations.ja; temp.textContent='—°C'; desc.textContent=d.weatherError; icon.textContent='☁'; icon.className='weather-icon weather-cloud'; }
+}
+setInterval(loadWeather,10*60*1000);
+window.addEventListener('load',()=>{ setLang('ja'); loadWeather(); });
+
+function getHeroBaseOffset() {
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  if (w <= 390) return h <= 600 && w > h ? 8 : 18;
+  if (w <= 600) return h <= 600 && w > h ? 8 : 24;
+  if (w <= 900) return h <= 600 && w > h ? 8 : 30;
+  return 88;
+}
+function resetHeroVisual() {
+  const heroContent = document.querySelector('.hero-content');
+  if (!heroContent) return;
+  const baseOffset = getHeroBaseOffset();
+  heroContent.style.transform = `translateY(${baseOffset}px)`;
+  heroContent.style.opacity = '1';
+}
 
 window.addEventListener('scroll', () => {
-  const sy = window.scrollY;
+  const hero = document.getElementById('hero');
   const heroContent = document.querySelector('.hero-content');
-  if (heroContent && sy < window.innerHeight) {
-    heroContent.style.transform = `translateY(${sy * .3}px)`;
-    heroContent.style.opacity = 1 - sy / (window.innerHeight * .7);
-  }
+  if (!heroContent || !hero || !hero.classList.contains('is-active')) return;
+
+  const sy = Math.max(0, Math.min(window.scrollY, window.innerHeight));
+  const baseOffset = getHeroBaseOffset();
+  heroContent.style.transform = `translateY(${baseOffset + sy * .3}px)`;
+  heroContent.style.opacity = Math.max(0, 1 - sy / (window.innerHeight * .7));
 });
+
+window.addEventListener('resize', resetHeroVisual);
+resetHeroVisual();
 </script>
+
+<script id="multi-page-navigation">
+(function () {
+  const pages = Array.from(document.querySelectorAll('.site-page[data-page]'));
+  if (!pages.length) return;
+
+  const navLinks = Array.from(document.querySelectorAll('a[href^="#"]'));
+  const validPages = new Set(pages.map(p => p.dataset.page));
+
+  function pageFromHash() {
+    const hash = window.location.hash.replace('#', '').trim();
+    return validPages.has(hash) ? hash : 'home';
+  }
+
+  function setActivePage(pageName, updateHistory) {
+    if (!validPages.has(pageName)) pageName = 'home';
+
+    pages.forEach(page => {
+      const active = page.dataset.page === pageName;
+      page.classList.toggle('is-active', active);
+      page.setAttribute('aria-hidden', active ? 'false' : 'true');
+    });
+
+    navLinks.forEach(link => {
+      const target = link.getAttribute('href').replace('#', '');
+      const isPageLink = validPages.has(target);
+      link.classList.toggle('is-current', isPageLink && target === pageName);
+      if (isPageLink) link.setAttribute('aria-current', target === pageName ? 'page' : 'false');
+    });
+
+    document.body.classList.add('page-mode');
+
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    const heroContent = document.querySelector('.hero-content');
+    if (heroContent) {
+      const baseOffset = getHeroBaseOffset();
+      heroContent.style.transform = `translateY(${baseOffset}px)`;
+      heroContent.style.opacity = '1';
+    }
+
+    if (updateHistory) {
+      const newHash = pageName === 'home' ? '' : '#' + pageName;
+      if (window.location.hash !== newHash) {
+        history.pushState({ page: pageName }, '', window.location.pathname + window.location.search + newHash);
+      }
+    }
+
+    const mobileMenu = document.getElementById('mobileMenu');
+    if (mobileMenu) mobileMenu.classList.remove('open', 'active');
+  }
+
+  navLinks.forEach(link => {
+    const target = link.getAttribute('href').replace('#', '');
+    if (!validPages.has(target)) return;
+    link.addEventListener('click', function (event) {
+      event.preventDefault();
+      setActivePage(target, true);
+    });
+  });
+
+  window.addEventListener('popstate', () => setActivePage(pageFromHash(), false));
+  window.addEventListener('hashchange', () => setActivePage(pageFromHash(), false));
+
+  setActivePage(pageFromHash(), false);
+})();
+</script>
+
 </body>
 </html>
