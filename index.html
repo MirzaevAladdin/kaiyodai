@@ -2501,5 +2501,69 @@ if(typeof applyDestinationLanguage==='function')applyDestinationLanguage(current
 })();
 </script>
 
+
+<script id="github-folder-photo-loader">
+/*
+  Load destination photos directly from the public GitHub repository.
+  Add image files to images/<destination folder>/ and commit them to GitHub.
+*/
+(async function loadDestinationPhotosFromGitHub(){
+  const owner = 'MirzaevAladdin';
+  const repo = 'kaiyodai';
+  const branch = 'main';
+  const folderAliases = {
+    '知床峠展望台': '知床峠展',
+    '本土最東端 納沙布岬': '本土最東端 納沙布岬'
+  };
+  const imageExtensions = /\.(jpe?g|png|webp|gif|avif)$/i;
+
+  async function listImages(folder) {
+    const url = `https://api.github.com/repos/${owner}/${repo}/contents/images/${encodeURIComponent(folder)}?ref=${branch}`;
+    const response = await fetch(url, { headers: { 'Accept': 'application/vnd.github+json' } });
+    if (!response.ok) return [];
+    const files = await response.json();
+    if (!Array.isArray(files)) return [];
+    return files
+      .filter(file => file.type === 'file' && imageExtensions.test(file.name))
+      .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }))
+      .map(file => file.download_url)
+      .filter(Boolean);
+  }
+
+  try {
+    if (!Array.isArray(destinationData)) return;
+    const results = await Promise.all(destinationData.map(async place => {
+      const folder = folderAliases[place.name] || place.name;
+      const images = await listImages(folder);
+      return { place, images };
+    }));
+
+    results.forEach(({ place, images }) => {
+      if (images.length) place.images = images;
+    });
+
+    // Refresh destination card covers after the folder listings have loaded.
+    document.querySelectorAll('#destination-grid .destination-card').forEach((card, index) => {
+      const place = destinationData[index];
+      const image = card.querySelector('.exp-card-bg');
+      if (!place || !image || !place.images || !place.images.length) return;
+      image.src = place.images[0];
+      image.onerror = () => {
+        image.onerror = null;
+      };
+    });
+
+    // If a destination dialog is already open, refresh its gallery too.
+    const modal = document.getElementById('destination-modal');
+    if (modal && modal.classList.contains('open') &&
+        destinationData[activeDestinationIndex]?.images?.length) {
+      openDestination(activeDestinationIndex);
+    }
+  } catch (error) {
+    console.warn('Could not load destination photos from GitHub. Existing cover photos will be used.', error);
+  }
+})();
+</script>
+
 </body>
 </html>
